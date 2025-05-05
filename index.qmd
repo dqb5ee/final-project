@@ -1,13 +1,4 @@
----
-title: "DS2023 Final Project"
-author: "Avalon Bennett, Kylie Stephens, and Will Wert"
-format:
-  html:
-    number-sections: false
----
-
-# Report 
-
+# Report {.unnumbered}
 ![](images/leap2.0.png)
 
 *Figure: Clinical LEAP report showing assessment results after ACL reconstruction.*
