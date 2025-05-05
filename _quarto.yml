@@ -1,0 +1,32 @@
+project:
+  type: book
+  output-dir: docs
+
+book:
+  title: "X"
+  author: "Kylie Stephens, Avalon Bennett, Will Wert" 
+  favicon: logo.png
+  description: "single line"
+  keyword: "data science, communicating, data visualization"
+  url: "https://github.com/kyliestephens/DS2023_Final"
+
+  sidebar:
+    logo: logo.png 
+    search: true
+
+  repo-url: "https://github.com/kyliestephens/DS2023_Final"
+  image: logo.png
+
+  chapters:
+    - index.qmd
+    - datacleaning.qmd
+    - eda.qmd 
+    - dataviz.qmd
+    - datadictionary.qmd
+
+format: 
+  html:
+    theme:
+      light: minty 
+    code-fold: false 
+    backgroundcolor: "#FFFFFF"
