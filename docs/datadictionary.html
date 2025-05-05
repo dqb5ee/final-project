@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="single line">
 
-<title>datadictionary – X</title>
+<title>4&nbsp; Data Dictionary – DS 2023 Final Project</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -72,7 +73,7 @@ ul.task-list li input[type="checkbox"] {
 
 </head>
 
-<body class="nav-sidebar floating fullcontent">
+<body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -81,7 +82,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./datadictionary.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">datadictionary.html</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./datadictionary.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Dictionary</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -99,7 +100,7 @@ ul.task-list li input[type="checkbox"] {
       <img src="./logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
       </a>
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">X</a> 
+      <a href="./">DS 2023 Final Project</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/kyliestephens/DS2023_Final" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
 </div>
@@ -133,13 +134,13 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dataviz.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">dataviz.html</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Data Visualization</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./datadictionary.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">datadictionary.html</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Dictionary</span></span></a>
   </div>
 </li>
     </ul>
@@ -147,13 +148,178 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
+    </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Dictionary</span></h1>
+</div>
 
 
 
+<div class="quarto-title-meta">
 
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>This document contains a data dictionary for the patient data collected in the study. Each variable is defined below:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 21%">
+<col style="width: 78%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>record_id</code></td>
+<td>The number assigned to each individual patient (starting at 1)</td>
+</tr>
+<tr class="even">
+<td><code>redcap_event_name</code></td>
+<td>Describes the visit when the data was recorded</td>
+</tr>
+<tr class="odd">
+<td><code>sex_dashboard</code></td>
+<td>Sex of patient (Male, Female, Not Reported)</td>
+</tr>
+<tr class="even">
+<td><code>graft_dashboard2</code></td>
+<td>Patient graft type</td>
+</tr>
+<tr class="odd">
+<td><code>visit_sex</code></td>
+<td>Sex of patient (Male, Female, Not Reported)</td>
+</tr>
+<tr class="even">
+<td><code>visit_graft</code></td>
+<td>Patient graft type</td>
+</tr>
+<tr class="odd">
+<td><code>age</code></td>
+<td>Age of patient at time of visit (in years)</td>
+</tr>
+<tr class="even">
+<td><code>height_m</code></td>
+<td>Patient height (in meters)</td>
+</tr>
+<tr class="odd">
+<td><code>mass_kg</code></td>
+<td>Patient weight (in kilograms)</td>
+</tr>
+<tr class="even">
+<td><code>bmi</code></td>
+<td>Body Mass Index (BMI) of patient</td>
+</tr>
+<tr class="odd">
+<td><code>tss</code></td>
+<td>Time Since Surgery (in months)</td>
+</tr>
+<tr class="even">
+<td><code>tss_dashboard</code></td>
+<td>String of the time since surgery range (in months)</td>
+</tr>
+<tr class="odd">
+<td><code>ikdc</code></td>
+<td>International Knee Documentation Committee score</td>
+</tr>
+<tr class="even">
+<td><code>koos_pain</code></td>
+<td>Knee Injury and Osteoarthritis Outcome Score pain score</td>
+</tr>
+<tr class="odd">
+<td><code>acl_rsi</code></td>
+<td>ACL Return to Sport Index score (mental readiness post-surgery)</td>
+</tr>
+<tr class="even">
+<td><code>acl_sh</code></td>
+<td>Single Hop Score for ACLR side</td>
+</tr>
+<tr class="odd">
+<td><code>con_sh</code></td>
+<td>Single Hop Score for contralateral side</td>
+</tr>
+<tr class="even">
+<td><code>sh_lsi</code></td>
+<td>Single Hop LSI (limb symmetry index), % injured vs.&nbsp;uninjured limb</td>
+</tr>
+<tr class="odd">
+<td><code>acl_th</code></td>
+<td>Triple Hop Score for ACLR side</td>
+</tr>
+<tr class="even">
+<td><code>con_th</code></td>
+<td>Triple Hop Score for contralateral side</td>
+</tr>
+<tr class="odd">
+<td><code>th_lsi</code></td>
+<td>Triple Hop LSI (limb symmetry index), % injured vs.&nbsp;uninjured limb</td>
+</tr>
+<tr class="even">
+<td><code>acl_ext_mvic_60</code></td>
+<td>ACLR Extension MVIC Torque at 60° flexion (Nm/kg)</td>
+</tr>
+<tr class="odd">
+<td><code>con_ext_mvic_60</code></td>
+<td>Contralateral Extension MVIC Torque at 60° flexion (Nm/kg)</td>
+</tr>
+<tr class="even">
+<td><code>lsi_ext_mvic_60</code></td>
+<td>LSI % for Extension MVIC Torque at 60° flexion (Nm/kg)</td>
+</tr>
+<tr class="odd">
+<td><code>acl_flex_mvic_60</code></td>
+<td>ACLR Flexion MVIC Torque at 60° flexion (Nm/kg)</td>
+</tr>
+<tr class="even">
+<td><code>con_flex_mvic_60</code></td>
+<td>Contralateral Flexion MVIC Torque at 60° flexion (Nm/kg)</td>
+</tr>
+<tr class="odd">
+<td><code>lsi_flex_mvic_60</code></td>
+<td>LSI % for Flexion MVIC Torque at 60° flexion (Nm/kg)</td>
+</tr>
+<tr class="even">
+<td><code>acl_ext_isok_60</code></td>
+<td>ACLR Isokinetic Extension Torque at 60° flexion (Nm/kg)</td>
+</tr>
+<tr class="odd">
+<td><code>con_ext_isok_60</code></td>
+<td>Contralateral Isokinetic Extension Torque at 60° flexion (Nm/kg)</td>
+</tr>
+<tr class="even">
+<td><code>lsi_ext_isok_60</code></td>
+<td>LSI % for Isokinetic Extension Torque at 60° flexion (Nm/kg)</td>
+</tr>
+<tr class="odd">
+<td><code>acl_flex_isok_60</code></td>
+<td>ACLR Isokinetic Flexion Torque at 60° flexion (Nm/kg)</td>
+</tr>
+<tr class="even">
+<td><code>con_flex_isok_60</code></td>
+<td>Contralateral Isokinetic Flexion Torque at 60° flexion (Nm/kg)</td>
+</tr>
+<tr class="odd">
+<td><code>lsi_flex_isok_60</code></td>
+<td>LSI % for Isokinetic Flexion Torque at 60° flexion (Nm/kg)</td>
+</tr>
+</tbody>
+</table>
 
 
 
@@ -577,8 +743,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./dataviz.html" class="pagination-link" aria-label="dataviz.html">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">dataviz.html</span></span>
+      <a href="./dataviz.html" class="pagination-link" aria-label="Data Visualization">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Data Visualization</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

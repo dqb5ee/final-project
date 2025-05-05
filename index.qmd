@@ -1,5 +1,37 @@
-# Preface {.unnumbered}
+---
+title: "DS2023 Final Project"
+author: "Avalon Bennett, Kylie Stephens, and Will Wert"
+format: html
+toc: true
+---
 
-This is a Quarto book.
+# Report
 
-To learn more about Quarto books visit <https://quarto.org/docs/books>.
+![](images/leap2.0.png)
+
+*Figure: Clinical LEAP report showing assessment results after ACL reconstruction.*
+
+## Prepared for
+
+UVA Orthopedic Center Therapy Services  
+Charlottesville, VA
+
+---
+
+## Problem Statement
+
+It is crucial that both patients and physicians are able to use and interpret a LEAP Report to track a patient’s ACLR recovery, but for very different purposes. Patients want to see where they stack up against other people in the recovery process, and physicians need to track specific details to tailor a recovery plan. Patients may have a hard time digesting the current LEAP report as it is information dense and does not provide significant context or explanation of the functional and strength assessments and what they mean. The medical jargon included in the LEAP report that patients receive in their check up appointments following surgery may be meaningless and overwhelming for them. While revamping this report will provide clarity for patients, it is also critical to leave in certain features of the report that are necessary for accessibility, organization, and use by physicians. These features include name, date of birth, height, weight, age, the limb that surgery was performed on, and the dates of surgery and tests. Additionally, certain graphs that the LEAP report uses are vital for physicians, but could still be improved for readability and clarity for all parties involved.
+
+---
+
+## Analysis
+
+Our idea to improve the ability of patients to comprehend a LEAP report is to incorporate graphs that let the patient plot themself within the general trend of ACL patients in recovery for various statistics. We will also include definitions for all metrics and descriptions in layman's terms alongside them. For example, “after 6 months of recovery, most patients have X% strength, this is where you stand…” and “patients that perform better on strength and functional assessments (insert specific ones) report higher ACL RSI scores.” 
+
+A way to take this further would be creating an interactive graph then when a patient’s data gets uploaded into the report, the report is able to plot them on the graphs and give them tailored, understandable  feedback based on where they stand with each metric and overall. 
+
+---
+
+## Conclusion
+
+We will explain the context behind these strength tests and functional assessments and provide additional information on why they are important, what they mean for a patient in terms of recovery, and what an ACL RSI or LSI  score is. We will also explain the terms that are used heavily by doctors when discussing a patient and his/her recovery and progress, so that the patient will better be able to digest what this means for them specifically. Allowing a patient to know where they stand will improve their ability to interact and engage in strength/recovery programs, ideally allowing them to make a safe, quick return to activity.
