@@ -6,8 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Kylie Stephens, Avalon Bennett, Will Wert">
-<meta name="description" content="single line">
+<meta name="author" content="Avalon Bennett, Kylie Stephens, and Will Wert">
+<meta name="description" content="Analyzing and Revamping ACLR Data">
 
 <title>DS 2023 Final Project</title>
 <style>
@@ -83,7 +83,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Preface</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">DS2023 Final Project</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -117,31 +117,31 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Preface</span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">DS2023 Final Project</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./datacleaning.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">datacleaning.html</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data Cleaning</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./eda.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">eda.html</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">eda.html</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dataviz.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Data Visualization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Visualization</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./datadictionary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Dictionary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Data Dictionary</span></span></a>
   </div>
 </li>
     </ul>
@@ -154,7 +154,13 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#preface" id="toc-preface" class="nav-link active" data-scroll-target="#preface">Preface</a></li>
+  <li><a href="#report" id="toc-report" class="nav-link active" data-scroll-target="#report">Report</a>
+  <ul class="collapse">
+  <li><a href="#prepared-for" id="toc-prepared-for" class="nav-link" data-scroll-target="#prepared-for">Prepared for</a></li>
+  <li><a href="#problem-statement" id="toc-problem-statement" class="nav-link" data-scroll-target="#problem-statement">Problem Statement</a></li>
+  <li><a href="#analysis" id="toc-analysis" class="nav-link" data-scroll-target="#analysis">Analysis</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -168,7 +174,7 @@ ul.task-list li input[type="checkbox"] {
 
 <div>
   <div class="description">
-    single line
+    Analyzing and Revamping ACLR Data
   </div>
 </div>
 
@@ -178,7 +184,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Kylie Stephens, Avalon Bennett, Will Wert </p>
+             <p>Avalon Bennett, Kylie Stephens, and Will Wert </p>
           </div>
   </div>
     
@@ -191,12 +197,33 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="preface" class="level1 unnumbered">
-<h1 class="unnumbered">Preface</h1>
-<p>This is a Quarto book.</p>
-<p>To learn more about Quarto books visit <a href="https://quarto.org/docs/books" class="uri">https://quarto.org/docs/books</a>.</p>
+<section id="report" class="level1">
+<h1>Report</h1>
+<p><img src="images/leap2.0.png" class="img-fluid"></p>
+<p><em>Figure: Clinical LEAP report showing assessment results after ACL reconstruction.</em></p>
+<section id="prepared-for" class="level2">
+<h2 class="anchored" data-anchor-id="prepared-for">Prepared for</h2>
+<p>UVA Orthopedic Center Therapy Services<br>
+Charlottesville, VA</p>
+<hr>
+</section>
+<section id="problem-statement" class="level2">
+<h2 class="anchored" data-anchor-id="problem-statement">Problem Statement</h2>
+<p>It is crucial that both patients and physicians are able to use and interpret a LEAP Report to track a patient’s ACLR recovery, but for very different purposes. Patients want to see where they stack up against other people in the recovery process, and physicians need to track specific details to tailor a recovery plan. Patients may have a hard time digesting the current LEAP report as it is information dense and does not provide significant context or explanation of the functional and strength assessments and what they mean. The medical jargon included in the LEAP report that patients receive in their check up appointments following surgery may be meaningless and overwhelming for them. While revamping this report will provide clarity for patients, it is also critical to leave in certain features of the report that are necessary for accessibility, organization, and use by physicians. These features include name, date of birth, height, weight, age, the limb that surgery was performed on, and the dates of surgery and tests. Additionally, certain graphs that the LEAP report uses are vital for physicians, but could still be improved for readability and clarity for all parties involved.</p>
+<hr>
+</section>
+<section id="analysis" class="level2">
+<h2 class="anchored" data-anchor-id="analysis">Analysis</h2>
+<p>Our idea to improve the ability of patients to comprehend a LEAP report is to incorporate graphs that let the patient plot themself within the general trend of ACL patients in recovery for various statistics. We will also include definitions for all metrics and descriptions in layman’s terms alongside them. For example, “after 6 months of recovery, most patients have X% strength, this is where you stand…” and “patients that perform better on strength and functional assessments (insert specific ones) report higher ACL RSI scores.”</p>
+<p>A way to take this further would be creating an interactive graph then when a patient’s data gets uploaded into the report, the report is able to plot them on the graphs and give them tailored, understandable feedback based on where they stand with each metric and overall.</p>
+<hr>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>We will explain the context behind these strength tests and functional assessments and provide additional information on why they are important, what they mean for a patient in terms of recovery, and what an ACL RSI or LSI score is. We will also explain the terms that are used heavily by doctors when discussing a patient and his/her recovery and progress, so that the patient will better be able to digest what this means for them specifically. Allowing a patient to know where they stand will improve their ability to interact and engage in strength/recovery programs, ideally allowing them to make a safe, quick return to activity.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -621,8 +648,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   <div class="nav-page nav-page-previous">
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./datacleaning.html" class="pagination-link" aria-label="datacleaning.html">
-        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">datacleaning.html</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./datacleaning.html" class="pagination-link" aria-label="Data Cleaning">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data Cleaning</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
