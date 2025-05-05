@@ -1,0 +1,44 @@
+---
+title: "Data Dictionary"
+format: html
+toc: true
+---
+
+This document contains a data dictionary for the patient data collected in the study. Each variable is defined below:
+
+```{=markdown}
+| Variable Name             | Description                                                                                  |
+|--------------------------|----------------------------------------------------------------------------------------------|
+| `record_id`              | The number assigned to each individual patient (starting at 1)                               |
+| `redcap_event_name`      | Describes the visit when the data was recorded                                               |
+| `sex_dashboard`          | Sex of patient (Male, Female, Not Reported)                                                  |
+| `graft_dashboard2`       | Patient graft type                                                                           |
+| `visit_sex`              | Sex of patient (Male, Female, Not Reported)                                                  |
+| `visit_graft`            | Patient graft type                                                                           |
+| `age`                    | Age of patient at time of visit (in years)                                                   |
+| `height_m`               | Patient height (in meters)                                                                   |
+| `mass_kg`                | Patient weight (in kilograms)                                                                |
+| `bmi`                    | Body Mass Index (BMI) of patient                                                             |
+| `tss`                    | Time Since Surgery (in months)                                                               |
+| `tss_dashboard`          | String of the time since surgery range (in months)                                           |
+| `ikdc`                   | International Knee Documentation Committee score                                             |
+| `koos_pain`              | Knee Injury and Osteoarthritis Outcome Score pain score                                      |
+| `acl_rsi`                | ACL Return to Sport Index score (mental readiness post-surgery)                              |
+| `acl_sh`                 | Single Hop Score for ACLR side                                                               |
+| `con_sh`                 | Single Hop Score for contralateral side                                                      |
+| `sh_lsi`                 | Single Hop LSI (limb symmetry index), % injured vs. uninjured limb                           |
+| `acl_th`                 | Triple Hop Score for ACLR side                                                               |
+| `con_th`                 | Triple Hop Score for contralateral side                                                      |
+| `th_lsi`                 | Triple Hop LSI (limb symmetry index), % injured vs. uninjured limb                           |
+| `acl_ext_mvic_60`        | ACLR Extension MVIC Torque at 60° flexion (Nm/kg)                                            |
+| `con_ext_mvic_60`        | Contralateral Extension MVIC Torque at 60° flexion (Nm/kg)                                   |
+| `lsi_ext_mvic_60`        | LSI % for Extension MVIC Torque at 60° flexion (Nm/kg)                                       |
+| `acl_flex_mvic_60`       | ACLR Flexion MVIC Torque at 60° flexion (Nm/kg)                                              |
+| `con_flex_mvic_60`       | Contralateral Flexion MVIC Torque at 60° flexion (Nm/kg)                                     |
+| `lsi_flex_mvic_60`       | LSI % for Flexion MVIC Torque at 60° flexion (Nm/kg)                                         |
+| `acl_ext_isok_60`        | ACLR Isokinetic Extension Torque at 60° flexion (Nm/kg)                                      |
+| `con_ext_isok_60`        | Contralateral Isokinetic Extension Torque at 60° flexion (Nm/kg)                             |
+| `lsi_ext_isok_60`        | LSI % for Isokinetic Extension Torque at 60° flexion (Nm/kg)                                 |
+| `acl_flex_isok_60`       | ACLR Isokinetic Flexion Torque at 60° flexion (Nm/kg)                                        |
+| `con_flex_isok_60`       | Contralateral Isokinetic Flexion Torque at 60° flexion (Nm/kg)                               |
+| `lsi_flex_isok_60`       | LSI % for Isokinetic Flexion Torque at 60° flexion (Nm/kg)                                   |
