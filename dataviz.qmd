@@ -303,7 +303,7 @@ for ax in [ax1, ax2]:
     ax.set_yticklabels([0, 40, 80, 120], fontsize=22)
 
 #Overall Graph Title
-fig.suptitle('Quadriceps and Hamstrings Strength at 60 °/s (Isokinetic)', fontsize=22)
+fig.suptitle('Quadriceps and Hamstrings Strength at 60 °/s (Nm/kg): Isokinetic', fontsize=22)
 plt.tight_layout(rect=[0, 0, 1, 0.95])
 
 # Saving the graph
@@ -421,7 +421,7 @@ for ax in [ax1, ax2]:
     ax.set_yticklabels([0, 40, 80, 120], fontsize=22)
 
 #Overall Graph Title
-fig.suptitle('Quadriceps and Hamstrings Strength at 60 °/s (Isokinetic)', fontsize=22)
+fig.suptitle('Quadriceps and Hamstrings Strength at 60 °/s (Nm/kg): Isometric', fontsize=22)
 plt.tight_layout(rect=[0, 0, 1, 0.95])
 
 # Saving the graph
