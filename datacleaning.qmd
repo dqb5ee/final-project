@@ -3,7 +3,7 @@ title: "Data Cleaning"
 format: html
 ---
 
-# Data Cleaning
+# Data Cleaning {.unnumbered}
 
 ```{python}
 ### Import libraries
