@@ -3,10 +3,10 @@ project:
   output-dir: docs
 
 book:
-  title: "DS 2023 Final Project"
+  title: "Redesigning the ACLR LEAP Report"
   author: "Kylie Stephens, Avalon Bennett, Will Wert" 
   favicon: logo.png
-  description: "Analyzing and Revamping ACLR Data"
+  description: "Visualizing Patient Progress and Rethinking Benchmarks in ACL Rehabilitation Data"
   keyword: "data science, communicating, data visualization"
   url: "https://github.com/kyliestephens/DS2023_Final"
 
