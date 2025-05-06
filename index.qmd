@@ -43,3 +43,6 @@ Defining terms such as isokinetic, isometric, LSI, and RSI allows patients to be
 RSI, or Return to Sport Index, is a psychological measure of a patient’s self-perceived readiness to return to sport. This metric is also important in assessing overall recovery. The updated LEAP report includes a graph showing the upward trend of RSI scores as time since surgery increases, offering greater context and insight than merely listing the patient’s current RSI score.
 
 The improved report enables patients to better understand the data presented, compare their progress to others at similar recovery stages, and identify target milestones for their next visit. A report that fails to effectively communicate this critical information will be less helpful in guiding patients through their ACL recovery journey.
+
+
+**Link to GitHub Repository:** https://github.com/dqb5ee/final-project 
