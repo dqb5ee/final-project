@@ -1,6 +1,12 @@
 ---
 title: "Data Visualization"
 format: html
+jupyter: python3
+execute:
+  echo: true
+  warning: false
+  message: false
+  fig-align: center
 ---
 
 # Final Project EDA
@@ -454,7 +460,8 @@ plt.gca().spines['left'].set_visible(False)
 plt.tick_params(axis='y', which='both',length=0)
 
 # Saving the graph
-#plt.savefig('age_dist_histogram.png', dpi=300, bbox_inches='tight')
+plt.savefig("images/age_dist_histogram.png", dpi=300, bbox_inches="tight")
+print("![plot](./images/age_dist_histogram.png")
 plt.show()
 ```
 
@@ -481,7 +488,8 @@ plt.gca().spines['left'].set_visible(False)
 plt.tick_params(axis='y', which='both',length=0)
 
 # Saving the graph
-#plt.savefig('acl_rsi_histogram.png', dpi=300, bbox_inches='tight')
+plt.savefig("images/acl_rsi_histogram.png", dpi=300, bbox_inches="tight")
+print("![plot](./images/acl_rsi_histogram.png")
 plt.show()
 ```
 
@@ -512,7 +520,8 @@ plt.gca().spines['left'].set_visible(False)
 plt.tick_params(axis='y', which='both',length=0)
 
 # Saving the graph
-#plt.savefig('ikdc_age_scatter.png', dpi=300, bbox_inches='tight')
+plt.savefig("images/ikdc_age_scatter.png", dpi=300, bbox_inches="tight")
+print("![plot](./images/ikdc_age_scatter.png")
 plt.show()
 ```
 
@@ -628,7 +637,8 @@ plt.gca().spines['left'].set_visible(False)
 plt.tick_params(axis='y', which='both',length=0)
 
 # Saving the graph
-plt.savefig('acl_rsi_age_scatter.png', dpi=300, bbox_inches='tight')
+plt.savefig("images/acl_rsi_age_scatter.png", dpi=300, bbox_inches="tight")
+print("![plot](./images/acl_rsi_age_scatter.png")
 plt.show()
 ```
 
@@ -659,7 +669,8 @@ plt.gca().spines['right'].set_visible(False)
 plt.gca().spines['left'].set_visible(False)
 plt.tick_params(axis='y', which='both',length=0)
 # Saving the graph
-plt.savefig('tss_dashboard_histogram.png', dpi=300, bbox_inches='tight')
+plt.savefig("images/tss_dashboard_histogram.png", dpi=300, bbox_inches="tight")
+print("![plot](./images/tss_dashboard_histogram.png")
 plt.show()
 ```
 
@@ -706,7 +717,8 @@ plt.gca().spines['left'].set_visible(False)
 plt.tick_params(axis='y', which='both',length=0)
 
 # Saving the graph
-plt.savefig('lsi_ext_isok_60_histogram.png', dpi=300, bbox_inches='tight')
+plt.savefig("images/lsi_ext_isok_60_histogram.png", dpi=300, bbox_inches="tight")
+print("![plot](./images/lsi_ext_isok_60_histogram.png")
 plt.show()
 ```
 
@@ -740,7 +752,8 @@ plt.gca().spines['left'].set_visible(False)
 plt.tick_params(axis='y', which='both',length=0)
 
 # Saving the graph
-plt.savefig('aclr_isok_flexion_histogram.png', dpi=300, bbox_inches='tight')
+plt.savefig("images/aclr_isok_flexion_histogram.png", dpi=300, bbox_inches="tight")
+print("![plot](./images/aclr_isok_flexion_histogram.png")
 plt.show()
 ```
 
@@ -762,7 +775,8 @@ plt.gca().spines['left'].set_visible(False)
 plt.tick_params(axis='y', which='both',length=0)
 
 # Saving the graph
-plt.savefig('sh_lsi_bmi_scatter.png', dpi=300, bbox_inches='tight')
+plt.savefig("images/sh_lsi_bmi_scatter.png", dpi=300, bbox_inches="tight")
+print("![plot](./images/sh_lsi_bmi_scatter.png")
 plt.show()
 ```
 
@@ -798,7 +812,8 @@ plt.tick_params(axis='y', which='both', length=0)
 plt.legend(loc='upper left', bbox_to_anchor=(1, 1), title='LSI Conditions')
 
 # Saving the graph
-plt.savefig('sh_lsi_tss_dashboard_scatter.png', dpi=300, bbox_inches='tight')
+plt.savefig("images/sh_lsi_tss_dashboard_scatter.png", dpi=300, bbox_inches="tight")
+print("![plot](./images/sh_lsi_tss_dashboard_scatter.png")
 plt.show()
 ```
 
@@ -832,7 +847,8 @@ plt.tick_params(axis='y', which='both', length=0)
 plt.legend(loc='upper left', bbox_to_anchor=(1, 1), title='Time Since Surgery')
 
 # Saving the graph
-plt.savefig('acl_rsi_kdeplot.png', dpi=300, bbox_inches='tight')
+plt.savefig("images/acl_rsi_kdeplot.png", dpi=300, bbox_inches="tight")
+print("![plot](./images/acl_rsi_kdeplot.png")
 plt.show()
 ```
 
@@ -856,8 +872,9 @@ ax.spines['left'].set_visible(False)
 plt.tick_params(axis='y', which='both', length=0)
 
 # Saving the graph
-plt.savefig('graft_type_histogram.png', dpi=300, bbox_inches='tight')
+plt.savefig("images/graft_type_histogram.png", dpi=300, bbox_inches="tight")
 plt.tight_layout()
+print("![plot](./images/graft_type_histogram.png")
 plt.show()
 ```
 
@@ -890,9 +907,9 @@ plt.tick_params(axis='y', which='both',length=0)
 plt.legend()
 
 # Saving the graph
-plt.savefig('acl_rsi_graft_kdeplot.png', dpi=300, bbox_inches='tight')
+plt.savefig("images/acl_rsi_graft_kdeplot.png", dpi=300, bbox_inches="tight")
+print("![plot](./images/acl_rsi_graft_kdeplot.png")
 plt.show()
-
 ```
 
 
@@ -924,7 +941,8 @@ plt.xticks(rotation=45, ha='right')
 plt.tick_params(axis='y', which='both',length=0)
 
 # Saving the graph
-plt.savefig('event_distribution_histogram.png', dpi=300, bbox_inches='tight')
+plt.savefig("images/event_distribution_histogram.png", dpi=300, bbox_inches="tight")
+print("![plot](./images/event_distribution_histogram.png")
 plt.show()
 ```
 
@@ -955,7 +973,8 @@ plt.gca().spines['left'].set_visible(False)
 plt.tick_params(axis='y', which='both', length=0)
 
 # Saving the graph
-plt.savefig('acl_rsi_visit_kdeplot.png', dpi=300, bbox_inches='tight')
+plt.savefig("images/acl_rsi_visit_kdeplot.png", dpi=300, bbox_inches="tight")
+print("![plot](./images/acl_rsi_visit_kdeplot.png")
 plt.show()
 ```
 
@@ -1049,11 +1068,11 @@ ax.spines['right'].set_visible(False) #Get rid of top spine of graph
 ax.tick_params(axis='x', rotation=0, length=0) #Get rid of x-axis ticks
 
 # Saving the graph
-plt.savefig('RSI_Score_Progression.png', dpi=300, bbox_inches='tight')
+plt.savefig("images/RSI_Score_Progression.png", dpi=300, bbox_inches="tight")
 
 plt.tight_layout()
+print("![plot](./images/RSI_Score_Progression.png")
 plt.show() #Display Graph
-
 ```
 
 
@@ -1394,11 +1413,11 @@ ax.set_yticks([0, 40, 80, 120]) #Setting y-ticks and labels only for these value
 ax.set_yticklabels([0, 40, 80, 120], fontsize=12)
 
 # Saving the graph
-plt.savefig('Biomechanics_Symmetry.png', dpi=300, bbox_inches='tight')
+plt.savefig("images/Biomechanics_Symmetry.png", dpi=300, bbox_inches="tight")
 
 plt.tight_layout()
+print("![plot](./images/Biomechanics_Symmetry.png")
 plt.show() #Display graph
-
 ```
 
 
@@ -1457,10 +1476,10 @@ fig.suptitle('Quadriceps and Hamstrings Strength at 60 °/s (Isokinetic)', fonts
 plt.tight_layout(rect=[0, 0, 1, 0.95])
 
 # Saving the graph
-plt.savefig('Strength_Comparison.png', dpi=300, bbox_inches='tight')
+plt.savefig("images/Strength_Comparison.png", dpi=300, bbox_inches="tight")
 
+print("![plot](./images/Strength_Comparison.png")
 plt.show() #Display the graph
-
 ```
 
 
@@ -1549,7 +1568,8 @@ fig.suptitle('Quadriceps and Hamstrings Strength at 60 °/s (Isokinetic)', fonts
 plt.tight_layout(rect=[0, 0, 1, 0.95])
 
 # Saving the graph
-plt.savefig('Strength_Comparison.png', dpi=300, bbox_inches='tight')
+plt.savefig("images/Strength_Comparison.png", dpi=300, bbox_inches="tight")
+print("![plot](./images/Strength_Comparison.png")
 plt.show() #Display the graph
 ```
 
@@ -1620,7 +1640,8 @@ fig.suptitle('Single Limb Hop Tests', fontsize=22)
 plt.tight_layout(rect=[0, 0, 1, 0.95])
 
 # Saving the graph
-plt.savefig('Single_Limb_Hop_Tests.png', dpi=300, bbox_inches='tight')
+plt.savefig("images/Single_Limb_Hop_Tests.png", dpi=300, bbox_inches="tight")
+print("![plot](./images/Single_Limb_Hop_Tests.png")
 plt.show() #Display graph
 ```
 
@@ -1793,11 +1814,11 @@ plt.tick_params(axis='x', length=0)
 plt.grid(False)
 
 # Saving the graph
-plt.savefig('TH_LSI_Progression.png', dpi=300, bbox_inches='tight')
+plt.savefig("images/TH_LSI_Progression.png", dpi=300, bbox_inches="tight")
 
 plt.tight_layout()
+print("![plot](./images/TH_LSI_Progression.png")
 plt.show() #Display graph
-
 ```
 
 
@@ -1900,11 +1921,11 @@ plt.tick_params(axis='x', rotation=0, length=0)
 plt.grid(False)
 
 # Saving the graph
-plt.savefig('SH_LSI_Progression.png', dpi=300, bbox_inches='tight')
+plt.savefig("images/SH_LSI_Progression.png", dpi=300, bbox_inches="tight")
 
 plt.tight_layout()
+print("![plot](./images/SH_LSI_Progression.png")
 plt.show() #Display graph
-
 ```
 
 
@@ -2052,11 +2073,11 @@ ax.spines['right'].set_visible(False)
 plt.tick_params(axis='x', length=0)
 
 # Saving the graph
-plt.savefig('Quadricep_Strength_Recovery.png', dpi=300, bbox_inches='tight')
+plt.savefig("images/Quadricep_Strength_Recovery.png", dpi=300, bbox_inches="tight")
 
 plt.tight_layout()
+print("![plot](./images/Quadricep_Strength_Recovery.png")
 plt.show() #Display graph
-
 ```
 
 
@@ -2361,7 +2382,8 @@ plt.gca().spines['left'].set_visible(False)
 plt.tick_params(axis='y', which='both',length=0)
 
 # Saving the graph
-plt.savefig('missing_data_heatmap.png', dpi=300, bbox_inches='tight')
+plt.savefig("images/missing_data_heatmap.png", dpi=300, bbox_inches="tight")
+print("![plot](./images/missing_data_heatmap.png")
 plt.show()
 ```
 

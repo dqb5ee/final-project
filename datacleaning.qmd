@@ -2,8 +2,7 @@
 title: "Data Cleaning"
 format: html
 ---
-
-# Data Cleaning {.unnumbered}
+This is simulated data on ACLR patients. 
 
 ```{python}
 ### Import libraries
