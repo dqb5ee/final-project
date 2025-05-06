@@ -21,6 +21,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -174,6 +208,868 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<div id="35de912a" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#import libraries</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> rcParams</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">"ignore"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="f83a4248" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Load in cleaned data</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.read_csv(<span class="st">'./ACLR_data.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="e7d06db6" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Getting an interest patient for example chart</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>interest_patient <span class="op">=</span> data[data[<span class="st">'record_id'</span>] <span class="op">==</span> <span class="dv">1473</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="34daf524" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>interest_patient.head()</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(interest_patient[<span class="st">'lsi_ext_mvic_60'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2058    53.78
+2059    68.81
+2060    70.27
+Name: lsi_ext_mvic_60, dtype: float64</code></pre>
+</div>
+</div>
+<pre><code>2058    53.78
+2059    68.81
+2060    70.27
+Name: lsi_ext_mvic_60, dtype: float64</code></pre>
+<div id="f6ca8ad9" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>average_acl_rsi_per_visit <span class="op">=</span> data.groupby(<span class="st">'tss_dashboard'</span>)[<span class="st">'acl_rsi'</span>].mean()</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Mean ACL RSI at Visit:'</span>, average_acl_rsi_per_visit)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>iqr_per_time <span class="op">=</span> {}</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> time <span class="kw">in</span> average_acl_rsi_per_visit.index:</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    time_data <span class="op">=</span> data[data[<span class="st">'tss_dashboard'</span>] <span class="op">==</span> time][<span class="st">'acl_rsi'</span>].dropna()</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    q1 <span class="op">=</span> time_data.quantile(<span class="fl">0.25</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    q3 <span class="op">=</span> time_data.quantile(<span class="fl">0.75</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    iqr_per_time[time] <span class="op">=</span> q3 <span class="op">-</span> q1</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"IQR for each time period:"</span>, iqr_per_time)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>q1_acl_rsi <span class="op">=</span> data[<span class="st">'acl_rsi'</span>].quantile(<span class="fl">0.25</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>q3_acl_rsi <span class="op">=</span> data[<span class="st">'acl_rsi'</span>].quantile(<span class="fl">0.75</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>iqr_acl_rsi <span class="op">=</span> q3_acl_rsi <span class="op">-</span> q1_acl_rsi</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"IQR for ACL RSI: </span><span class="sc">{</span>iqr_acl_rsi<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Mean ACL RSI at Visit: tss_dashboard
+13 to 24 months    67.849391
+3 to 4 months      57.920182
+5 to 7 months      70.263743
+8 to 12 months     76.423492
+Not Reported       60.345864
+Preoperative             NaN
+Name: acl_rsi, dtype: float64
+IQR for each time period: {'13 to 24 months': 37.285, '3 to 4 months': 35.0, '5 to 7 months': 33.3, '8 to 12 months': 31.975, 'Not Reported': 37.7225, 'Preoperative': nan}
+IQR for ACL RSI: 36.67</code></pre>
+</div>
+</div>
+<pre><code>Mean ACL RSI at Visit: tss_dashboard
+13 to 24 months    67.849391
+3 to 4 months      57.920182
+5 to 7 months      70.263743
+8 to 12 months     76.423492
+Not Reported       60.345864
+Preoperative             NaN
+Name: acl_rsi, dtype: float64
+IQR for each time period: {'13 to 24 months': 37.285, '3 to 4 months': 35.0, '5 to 7 months': 33.3, '8 to 12 months': 31.975, 'Not Reported': 37.7225, 'Preoperative': nan}
+IQR for ACL RSI: 36.67</code></pre>
+<div id="312dcb71" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Set font and font size</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>rcParams[<span class="st">'font.family'</span>] <span class="op">=</span> <span class="st">'Times New Roman'</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>rcParams[<span class="st">'font.size'</span>] <span class="op">=</span> <span class="dv">22</span>  </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Data (calculated above)</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>rsi_means <span class="op">=</span> [<span class="fl">57.920182</span>, <span class="fl">70.263743</span>, <span class="fl">76.423492</span>]</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>tss_dashboard <span class="op">=</span> [<span class="st">'3-4 months'</span>, <span class="st">'5-7 months'</span>, <span class="st">'8-12 months'</span>]</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>iqr_values <span class="op">=</span> [<span class="fl">35.0</span>, <span class="fl">33.3</span>, <span class="fl">31.975</span>]</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">#Creating figure</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co">#Calculating the upper and lower bounds for shading</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>upper_bounds <span class="op">=</span> [mean <span class="op">+</span> iqr <span class="op">/</span> <span class="dv">2</span> <span class="cf">for</span> mean, iqr <span class="kw">in</span> <span class="bu">zip</span>(rsi_means, iqr_values)]</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>lower_bounds <span class="op">=</span> [mean <span class="op">-</span> iqr <span class="op">/</span> <span class="dv">2</span> <span class="cf">for</span> mean, iqr <span class="kw">in</span> <span class="bu">zip</span>(rsi_means, iqr_values)]</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="co">#Shade the IQR regions to show the patient where they are + where they should be aiming to be</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>plt.fill_between(tss_dashboard, lower_bounds, upper_bounds, color<span class="op">=</span><span class="st">'green'</span>, alpha<span class="op">=</span><span class="fl">0.2</span>, label<span class="op">=</span><span class="st">'IQR'</span>)</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="co">#Plotting RSI means</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>plt.plot(</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    tss_dashboard,</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    rsi_means,</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>    marker<span class="op">=</span><span class="st">'o'</span>,</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>    markersize<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>    linestyle<span class="op">=</span><span class="st">'-'</span>,</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span>(<span class="dv">65</span><span class="op">/</span><span class="dv">255</span>, <span class="dv">105</span><span class="op">/</span><span class="dv">255</span>, <span class="dv">225</span><span class="op">/</span><span class="dv">255</span>, <span class="fl">0.5</span>)</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a><span class="co">#Annotating and labeling each point that shows the mean RSI score for patient's overtime</span></span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> tss, th <span class="kw">in</span> <span class="bu">zip</span>(tss_dashboard, rsi_means):</span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>    plt.text(tss, th <span class="op">+</span> <span class="fl">1.5</span>, <span class="ss">f'</span><span class="sc">{</span>th<span class="sc">:.1f}</span><span class="ss">'</span>, ha<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a><span class="co">#Point with patient's RSI score at this visit in correct time bin</span></span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>plt.scatter(<span class="st">'5-7 months'</span>, <span class="fl">60.8</span>, color<span class="op">=</span>(<span class="st">'green'</span>), s<span class="op">=</span><span class="dv">100</span>, zorder<span class="op">=</span><span class="dv">5</span>) <span class="co">#Dot is green because it is in RSI range</span></span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>plt.text(<span class="st">'5-7 months'</span>, <span class="fl">60.8</span> <span class="op">+</span> <span class="fl">1.5</span>, <span class="st">'60.8'</span>, color<span class="op">=</span><span class="st">'black'</span>, ha<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">20</span>) <span class="co">#Label the point</span></span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> plt.gca() <span class="co">#Styling</span></span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="dv">20</span>, <span class="dv">100</span>) <span class="co">#Y-limit</span></span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>ax.set_yticks(<span class="bu">range</span>(<span class="dv">20</span>, <span class="dv">101</span>, <span class="dv">20</span>))</span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'RSI Score Progression'</span>) <span class="co">#Graph Title</span></span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time Since Surgery'</span>) <span class="co">#X-axis label</span></span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'RSI Score (Mean)'</span>) <span class="co">#Y-axis Label</span></span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a>ax.spines[<span class="st">'top'</span>].set_visible(<span class="va">False</span>) <span class="co">#Get rid of top spine of graph</span></span>
+<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a>ax.spines[<span class="st">'right'</span>].set_visible(<span class="va">False</span>) <span class="co">#Get rid of top spine of graph</span></span>
+<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a>ax.tick_params(axis<span class="op">=</span><span class="st">'x'</span>, rotation<span class="op">=</span><span class="dv">0</span>, length<span class="op">=</span><span class="dv">0</span>) <span class="co">#Get rid of x-axis ticks</span></span>
+<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a><span class="co"># Saving the graph</span></span>
+<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'RSI_Score_Progression.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span>
+<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a>plt.show() <span class="co">#Display Graph</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="dataviz_files/figure-html/cell-7-output-1.png" width="726" height="726" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="d457b4d7" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>visit1_data <span class="op">=</span> data[data[<span class="st">'redcap_event_name'</span>] <span class="op">==</span> <span class="st">'visit_1_arm_1'</span>] <span class="co">#New Dataset for only Visit 1 Data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="3479d21d" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>visit2_data <span class="op">=</span> data[data[<span class="st">'redcap_event_name'</span>] <span class="op">==</span> <span class="st">'visit_2_arm_1'</span>] <span class="co">#New Dataset for only Visit 2 Data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The below code chunks calculate IQR for the Isokinetic LSI graph.</p>
+<div id="7605e07b" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>q1 <span class="op">=</span> visit2_data[<span class="st">'lsi_ext_isok_60'</span>].quantile(<span class="fl">0.25</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>q3 <span class="op">=</span> visit2_data[<span class="st">'lsi_ext_isok_60'</span>].quantile(<span class="fl">0.75</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>iqr <span class="op">=</span> q3 <span class="op">-</span> q1</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(q1)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(q3)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(iqr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>65.38
+91.4
+26.02000000000001</code></pre>
+</div>
+</div>
+<pre><code>65.38
+91.4
+26.02000000000001</code></pre>
+<div id="b8b3dcac" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>q21 <span class="op">=</span> visit2_data[<span class="st">'lsi_flex_isok_60'</span>].quantile(<span class="fl">0.25</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>q23 <span class="op">=</span> visit2_data[<span class="st">'lsi_flex_isok_60'</span>].quantile(<span class="fl">0.75</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>iqr2 <span class="op">=</span> q23 <span class="op">-</span> q21</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(q21)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(q23)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(iqr2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>80.9320467425
+101.671707325
+20.739660582499994</code></pre>
+</div>
+</div>
+<pre><code>80.9320467425
+101.671707325
+20.739660582499994</code></pre>
+<div id="8c5bc8fb" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>interest_patient[<span class="st">'lsi_flex_mvic_60'</span>].value_counts() <span class="co">#getting values to graph for patient of interest (we are focusing on visit2)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="43">
+<pre><code>lsi_flex_mvic_60
+61.54    1
+76.74    1
+89.58    1
+Name: count, dtype: int64</code></pre>
+</div>
+</div>
+<pre><code>lsi_flex_mvic_60
+61.54    1
+76.74    1
+89.58    1
+Name: count, dtype: int64</code></pre>
+<div id="34f54a60" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>interest_patient[<span class="st">'lsi_ext_mvic_60'</span>].value_counts() <span class="co">#getting values to graph for patient of interest (we are focusing on visit2)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="44">
+<pre><code>lsi_ext_mvic_60
+53.78    1
+68.81    1
+70.27    1
+Name: count, dtype: int64</code></pre>
+</div>
+</div>
+<pre><code>lsi_ext_mvic_60
+53.78    1
+68.81    1
+70.27    1
+Name: count, dtype: int64</code></pre>
+<div id="4b412c60" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>x_axis <span class="op">=</span> [<span class="st">'Running'</span>, <span class="st">'Squatting'</span>, <span class="st">'Landing'</span>, <span class="st">'Bilateral Jump'</span>] <span class="co">#Labels for x-axis</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> [<span class="fl">89.4</span>, <span class="fl">76.8</span>, <span class="fl">44.3</span>, <span class="fl">68.3</span>] <span class="co">#Values to plot for the bars</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Individually assigning each activity to a variable to make the bars different colors</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>person1 <span class="op">=</span> [<span class="st">'Running'</span>]</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>person2 <span class="op">=</span> [<span class="st">'Squatting'</span>]</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>person3 <span class="op">=</span> [<span class="st">'Landing'</span>]</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>person4 <span class="op">=</span> [<span class="st">'Bilateral Jump'</span>]</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="co">#Setting the font</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>plt.rc(<span class="st">'font'</span>, family<span class="op">=</span><span class="st">'Times New Roman'</span>)</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a><span class="co">#Creating the figure</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a><span class="co">#Coloring the bars separately (imitating original LEAP report)</span></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> []</span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> label <span class="kw">in</span> x_axis:</span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">any</span>(h <span class="kw">in</span> label <span class="cf">for</span> h <span class="kw">in</span> person1):</span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>        colors.append(<span class="st">'#004AAD'</span>)</span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> <span class="bu">any</span>(h <span class="kw">in</span> label <span class="cf">for</span> h <span class="kw">in</span> person2):</span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>        colors.append(<span class="st">'#F67B2F'</span>)</span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> <span class="bu">any</span>(h <span class="kw">in</span> label <span class="cf">for</span> h <span class="kw">in</span> person3):</span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>        colors.append(<span class="st">'#F03F36'</span>)</span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a>        colors.append(<span class="st">'#8680C4'</span>)</span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a><span class="co">#Create bars and label with their respective activity names</span></span>
+<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a>bars <span class="op">=</span> ax.bar(x_axis, scores, color<span class="op">=</span>colors, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a><span class="co">#Add value labels on top of each bar</span></span>
+<span id="cb25-32"><a href="#cb25-32" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> bar <span class="kw">in</span> bars:</span>
+<span id="cb25-33"><a href="#cb25-33" aria-hidden="true" tabindex="-1"></a>    height <span class="op">=</span> bar.get_height()</span>
+<span id="cb25-34"><a href="#cb25-34" aria-hidden="true" tabindex="-1"></a>    ax.text(</span>
+<span id="cb25-35"><a href="#cb25-35" aria-hidden="true" tabindex="-1"></a>        bar.get_x() <span class="op">+</span> bar.get_width() <span class="op">/</span> <span class="dv">2</span>,</span>
+<span id="cb25-36"><a href="#cb25-36" aria-hidden="true" tabindex="-1"></a>        height <span class="op">+</span> <span class="fl">1.5</span>,</span>
+<span id="cb25-37"><a href="#cb25-37" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f'</span><span class="sc">{</span>height<span class="sc">:.1f}</span><span class="ss">'</span>,</span>
+<span id="cb25-38"><a href="#cb25-38" aria-hidden="true" tabindex="-1"></a>        ha<span class="op">=</span><span class="st">'center'</span>,</span>
+<span id="cb25-39"><a href="#cb25-39" aria-hidden="true" tabindex="-1"></a>        va<span class="op">=</span><span class="st">'bottom'</span>,</span>
+<span id="cb25-40"><a href="#cb25-40" aria-hidden="true" tabindex="-1"></a>        fontsize<span class="op">=</span><span class="dv">22</span></span>
+<span id="cb25-41"><a href="#cb25-41" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb25-42"><a href="#cb25-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-43"><a href="#cb25-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-44"><a href="#cb25-44" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="dv">0</span>, <span class="dv">100</span>) <span class="co">#Y-limit to 100 (different from LEAP report; ideal symmetry between injured and uninjured limbs would be 100%)</span></span>
+<span id="cb25-45"><a href="#cb25-45" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Biomechanics Symmetry'</span>, fontsize<span class="op">=</span><span class="dv">22</span>) <span class="co">#Figure Title</span></span>
+<span id="cb25-46"><a href="#cb25-46" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'% Contralateral'</span>, fontsize<span class="op">=</span><span class="dv">22</span>) <span class="co">#Y-axis label </span></span>
+<span id="cb25-47"><a href="#cb25-47" aria-hidden="true" tabindex="-1"></a>ax.spines[<span class="st">'top'</span>].set_visible(<span class="va">False</span>) <span class="co">#Get rid of top spine of graph</span></span>
+<span id="cb25-48"><a href="#cb25-48" aria-hidden="true" tabindex="-1"></a>ax.spines[<span class="st">'right'</span>].set_visible(<span class="va">False</span>) <span class="co">#Get rid of right spine of graph</span></span>
+<span id="cb25-49"><a href="#cb25-49" aria-hidden="true" tabindex="-1"></a>ax.tick_params(axis<span class="op">=</span><span class="st">'x'</span>, rotation<span class="op">=</span><span class="dv">0</span>, length<span class="op">=</span><span class="dv">0</span>) <span class="co">#Get rid fo x-axis ticks</span></span>
+<span id="cb25-50"><a href="#cb25-50" aria-hidden="true" tabindex="-1"></a>ax.set_xticklabels(x_axis, fontsize<span class="op">=</span><span class="dv">22</span>) <span class="co">#Increase size of x-xis labels</span></span>
+<span id="cb25-51"><a href="#cb25-51" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">40</span>, color<span class="op">=</span><span class="st">'#64A846'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, linewidth<span class="op">=</span><span class="fl">1.5</span>, alpha<span class="op">=</span><span class="fl">0.5</span>) <span class="co">#Graph horizontal, green dashed lines at these values (imitating LEAP report)</span></span>
+<span id="cb25-52"><a href="#cb25-52" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">80</span>, color<span class="op">=</span><span class="st">'#64A846'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, linewidth<span class="op">=</span><span class="fl">1.5</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb25-53"><a href="#cb25-53" aria-hidden="true" tabindex="-1"></a>ax.set_yticks([<span class="dv">0</span>, <span class="dv">40</span>, <span class="dv">80</span>, <span class="dv">120</span>]) <span class="co">#Setting y-ticks and labels only for these values (imitating original LEAP report)</span></span>
+<span id="cb25-54"><a href="#cb25-54" aria-hidden="true" tabindex="-1"></a>ax.set_yticklabels([<span class="dv">0</span>, <span class="dv">40</span>, <span class="dv">80</span>, <span class="dv">120</span>], fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb25-55"><a href="#cb25-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-56"><a href="#cb25-56" aria-hidden="true" tabindex="-1"></a><span class="co"># Saving the graph</span></span>
+<span id="cb25-57"><a href="#cb25-57" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'Biomechanics_Symmetry.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span>
+<span id="cb25-58"><a href="#cb25-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-59"><a href="#cb25-59" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb25-60"><a href="#cb25-60" aria-hidden="true" tabindex="-1"></a>plt.show() <span class="co">#Display graph</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="dataviz_files/figure-html/cell-14-output-1.png" width="917" height="533" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="79d4d09c" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>labels_mvic <span class="op">=</span> [<span class="st">'Hamstring Strength (60 °/s)'</span>] <span class="co">#First subplot label</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>labels_isok <span class="op">=</span> [<span class="st">'Quad Strength (60 °/s)'</span>] <span class="co">#Second subplot label</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>scores_ham <span class="op">=</span> [<span class="fl">68.75</span>] <span class="co">#LSI patient value for hamstring strength (Isokinetic)</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>scores_quad <span class="op">=</span> [<span class="fl">93.10</span>] <span class="co">#LSI patient value for quadricep strength (Isokinetic)</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Define IQR bounds (calculated above)</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>q1, q3 <span class="op">=</span> <span class="fl">61.9</span>, <span class="fl">89.8</span>      </span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>q21, q23 <span class="op">=</span> <span class="fl">84.7</span>, <span class="fl">104.4</span>    </span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="co">#Setting font</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>plt.rc(<span class="st">'font'</span>, family<span class="op">=</span><span class="st">'Times New Roman'</span>)</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a><span class="co">#Creating figure with two subplots</span></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>fig, (ax1, ax2) <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>), sharey<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>ax1.bar(labels_mvic, scores_ham, color<span class="op">=</span><span class="st">'#F67B2F'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>) <span class="co">#Plotting the patient's lsi_flex_isok_60 as an orange bar</span></span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>ax1.axhspan(q1, q3, color<span class="op">=</span><span class="st">'#64A846'</span>, alpha<span class="op">=</span><span class="fl">0.4</span>)  <span class="co">#Shading the IQR in a light green color</span></span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>ax1.text(<span class="dv">0</span>, scores_ham[<span class="dv">0</span>] <span class="op">+</span> <span class="dv">2</span>, <span class="ss">f'</span><span class="sc">{</span>scores_ham[<span class="dv">0</span>]<span class="sc">:.1f}</span><span class="ss">'</span>, ha<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">22</span>)</span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>ax1.set_ylabel(<span class="st">'% Contralateral'</span>, fontsize<span class="op">=</span><span class="dv">22</span>) <span class="co">#Setting y-axis label </span></span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>ax1.set_ylim(<span class="dv">0</span>, <span class="dv">120</span>)  <span class="co">#Y-limit to 120 to imitate the original LEAP report</span></span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>ax1.tick_params(axis<span class="op">=</span><span class="st">'x'</span>, length<span class="op">=</span><span class="dv">0</span>) <span class="co">#Get rid of x-axis tick marks</span></span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>ax1.spines[<span class="st">'top'</span>].set_visible(<span class="va">False</span>) <span class="co">#Get rid of top spine of graph</span></span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a>ax1.spines[<span class="st">'right'</span>].set_visible(<span class="va">False</span>) <span class="co">#Get rid of right spine of graph</span></span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>ax1.set_xticklabels(labels_mvic, fontsize<span class="op">=</span><span class="dv">22</span>) <span class="co">#Label the bar</span></span>
+<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a>ax2.bar(labels_isok, scores_quad, color<span class="op">=</span><span class="st">'#004AAD'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>) <span class="co">#Plotting the patient's lsi_ext_isok_60 as a blue bar</span></span>
+<span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a>ax2.axhspan(q21, q23, color<span class="op">=</span><span class="st">'#64A846'</span>, alpha<span class="op">=</span><span class="fl">0.4</span>)  <span class="co">#Shading the IQR in a light green color</span></span>
+<span id="cb26-30"><a href="#cb26-30" aria-hidden="true" tabindex="-1"></a>ax2.text(<span class="dv">0</span>, scores_quad[<span class="dv">0</span>] <span class="op">+</span> <span class="dv">2</span>, <span class="ss">f'</span><span class="sc">{</span>scores_quad[<span class="dv">0</span>]<span class="sc">:.1f}</span><span class="ss">'</span>, ha<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">22</span>)</span>
+<span id="cb26-31"><a href="#cb26-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-32"><a href="#cb26-32" aria-hidden="true" tabindex="-1"></a>ax2.set_ylim(<span class="dv">0</span>, <span class="dv">120</span>)  <span class="co">#Y-limit to 120 to imitate the original LEAP report</span></span>
+<span id="cb26-33"><a href="#cb26-33" aria-hidden="true" tabindex="-1"></a>ax2.tick_params(axis<span class="op">=</span><span class="st">'x'</span>, length<span class="op">=</span><span class="dv">0</span>) <span class="co">#Get rid of x-axis tick marks</span></span>
+<span id="cb26-34"><a href="#cb26-34" aria-hidden="true" tabindex="-1"></a>ax2.spines[<span class="st">'top'</span>].set_visible(<span class="va">False</span>) <span class="co">#Get rid of top spine of graph</span></span>
+<span id="cb26-35"><a href="#cb26-35" aria-hidden="true" tabindex="-1"></a>ax2.spines[<span class="st">'right'</span>].set_visible(<span class="va">False</span>) <span class="co">#Get rid of right spine of graph</span></span>
+<span id="cb26-36"><a href="#cb26-36" aria-hidden="true" tabindex="-1"></a>ax2.tick_params(axis<span class="op">=</span><span class="st">'y'</span>, length<span class="op">=</span><span class="dv">0</span>) <span class="co">#Get rid of y-axis tick marks (only keeping them for the first subplot)</span></span>
+<span id="cb26-37"><a href="#cb26-37" aria-hidden="true" tabindex="-1"></a>ax2.set_xticklabels(labels_isok, fontsize<span class="op">=</span><span class="dv">22</span>) <span class="co">#Label the bar</span></span>
+<span id="cb26-38"><a href="#cb26-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-39"><a href="#cb26-39" aria-hidden="true" tabindex="-1"></a><span class="co">##Only having ticks and labels on the y-axis for these values (imitating original LEAP report)</span></span>
+<span id="cb26-40"><a href="#cb26-40" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax <span class="kw">in</span> [ax1, ax2]:</span>
+<span id="cb26-41"><a href="#cb26-41" aria-hidden="true" tabindex="-1"></a>    ax.set_yticks([<span class="dv">0</span>, <span class="dv">40</span>, <span class="dv">80</span>, <span class="dv">120</span>])</span>
+<span id="cb26-42"><a href="#cb26-42" aria-hidden="true" tabindex="-1"></a>    ax.set_yticklabels([<span class="dv">0</span>, <span class="dv">40</span>, <span class="dv">80</span>, <span class="dv">120</span>], fontsize<span class="op">=</span><span class="dv">22</span>)</span>
+<span id="cb26-43"><a href="#cb26-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-44"><a href="#cb26-44" aria-hidden="true" tabindex="-1"></a><span class="co">#Overall Graph Title</span></span>
+<span id="cb26-45"><a href="#cb26-45" aria-hidden="true" tabindex="-1"></a>fig.suptitle(<span class="st">'Quadriceps and Hamstrings Strength at 60 °/s (Isokinetic)'</span>, fontsize<span class="op">=</span><span class="dv">22</span>)</span>
+<span id="cb26-46"><a href="#cb26-46" aria-hidden="true" tabindex="-1"></a>plt.tight_layout(rect<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.95</span>])</span>
+<span id="cb26-47"><a href="#cb26-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-48"><a href="#cb26-48" aria-hidden="true" tabindex="-1"></a><span class="co"># Saving the graph</span></span>
+<span id="cb26-49"><a href="#cb26-49" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'Strength_Comparison.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span>
+<span id="cb26-50"><a href="#cb26-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-51"><a href="#cb26-51" aria-hidden="true" tabindex="-1"></a>plt.show() <span class="co">#Display the graph</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="dataviz_files/figure-html/cell-15-output-1.png" width="1109" height="553" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The below code chunks calculate IQR for the Isometric LSI graph.</p>
+<div id="48a008d1" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>q_1 <span class="op">=</span> visit2_data[<span class="st">'lsi_ext_mvic_60'</span>].quantile(<span class="fl">0.25</span>)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>q_3 <span class="op">=</span> visit2_data[<span class="st">'lsi_ext_mvic_60'</span>].quantile(<span class="fl">0.75</span>)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>iqr_1 <span class="op">=</span> q_3 <span class="op">-</span> q_1</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(q_1)</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(q_3)</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(iqr_1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>77.27
+100.0
+22.730000000000004</code></pre>
+</div>
+</div>
+<pre><code>77.27
+100.0
+22.730000000000004</code></pre>
+<div id="140ee256" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>q_12 <span class="op">=</span> visit2_data[<span class="st">'lsi_flex_mvic_60'</span>].quantile(<span class="fl">0.25</span>)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>q_32 <span class="op">=</span> visit2_data[<span class="st">'lsi_flex_mvic_60'</span>].quantile(<span class="fl">0.75</span>)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>iqr_2 <span class="op">=</span> q_32 <span class="op">-</span> q_12</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(q_12)</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(q_32)</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(iqr_2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>76.065
+99.255
+23.189999999999998</code></pre>
+</div>
+</div>
+<pre><code>76.065
+99.255
+23.189999999999998</code></pre>
+<div id="b7554761" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>interest_patient[<span class="st">'lsi_flex_mvic_60'</span>].value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="49">
+<pre><code>lsi_flex_mvic_60
+61.54    1
+76.74    1
+89.58    1
+Name: count, dtype: int64</code></pre>
+</div>
+</div>
+<pre><code>lsi_flex_mvic_60
+61.54    1
+76.74    1
+89.58    1
+Name: count, dtype: int64</code></pre>
+<div id="2e654e52" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>interest_patient[<span class="st">'lsi_ext_mvic_60'</span>].value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="50">
+<pre><code>lsi_ext_mvic_60
+53.78    1
+68.81    1
+70.27    1
+Name: count, dtype: int64</code></pre>
+</div>
+</div>
+<pre><code>lsi_ext_mvic_60
+53.78    1
+68.81    1
+70.27    1
+Name: count, dtype: int64</code></pre>
+<div id="cd0b43a5" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>labels_mvic <span class="op">=</span> [<span class="st">'Hamstring Strength (60 °/s)'</span>] <span class="co">#First subplot label</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>labels_isok <span class="op">=</span> [<span class="st">'Quad Strength (60 °/s)'</span>] <span class="co">#Second subplot label</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>scores_ham <span class="op">=</span> [<span class="fl">76.74</span>] <span class="co">#LSI patient value for hamstring strength (Isometric)</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>scores_quad <span class="op">=</span> [<span class="fl">68.81</span>] <span class="co">#LSI patient value for quadricept strength (Isometric)</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Define IQR bounds</span></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a><span class="co">#q1, q3 = visit2_data['lsi_flex_mvic_60'].quantile(0.25), visit2_data['lsi_flex_mvic_60'].quantile(0.75)  #Hamstring IQR</span></span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a><span class="co">#q21, q23 = visit2_data['lsi_ext_mvic_60'].quantile(0.25), visit2_data['lsi_ext_mvic_60'].quantile(0.75)  #Quadriceps IQR</span></span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a><span class="co">#Set font</span></span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>plt.rc(<span class="st">'font'</span>, family<span class="op">=</span><span class="st">'Times New Roman'</span>)</span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a><span class="co">#Create figure with 2 subplots</span></span>
+<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>fig, (ax1, ax2) <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>), sharey<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a>ax1.bar(labels_mvic, scores_ham, color<span class="op">=</span><span class="st">'#F67B2F'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>) <span class="co">#Plotting the patient's lsi_flex_mvic_60 as an orange bar</span></span>
+<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a>ax1.axhspan(q_1, q_3, color<span class="op">=</span><span class="st">'#64A846'</span>, alpha<span class="op">=</span><span class="fl">0.4</span>)  <span class="co">#Shading the IQR in a light green color</span></span>
+<span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a>ax1.text(<span class="dv">0</span>, scores_ham[<span class="dv">0</span>] <span class="op">+</span> <span class="dv">2</span>, <span class="ss">f'</span><span class="sc">{</span>scores_ham[<span class="dv">0</span>]<span class="sc">:.1f}</span><span class="ss">'</span>, ha<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">16</span>) <span class="co">#Labeling bar with value</span></span>
+<span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a>ax1.set_ylabel(<span class="st">'% Contralateral'</span>, fontsize<span class="op">=</span><span class="dv">22</span>) <span class="co">#Setting y-axis label </span></span>
+<span id="cb39-21"><a href="#cb39-21" aria-hidden="true" tabindex="-1"></a>ax1.set_ylim(<span class="dv">0</span>, <span class="dv">120</span>) <span class="co">#Y-limit to 120 to imitate the original LEAP report</span></span>
+<span id="cb39-22"><a href="#cb39-22" aria-hidden="true" tabindex="-1"></a>ax1.tick_params(axis<span class="op">=</span><span class="st">'x'</span>, length<span class="op">=</span><span class="dv">0</span>) <span class="co">#Get rid of x-axis tick marks</span></span>
+<span id="cb39-23"><a href="#cb39-23" aria-hidden="true" tabindex="-1"></a>ax1.spines[<span class="st">'top'</span>].set_visible(<span class="va">False</span>) <span class="co">#Get rid of top spine of graph</span></span>
+<span id="cb39-24"><a href="#cb39-24" aria-hidden="true" tabindex="-1"></a>ax1.spines[<span class="st">'right'</span>].set_visible(<span class="va">False</span>) <span class="co">#Get rid of right spine of graph</span></span>
+<span id="cb39-25"><a href="#cb39-25" aria-hidden="true" tabindex="-1"></a>ax1.set_xticklabels(labels_mvic, fontsize<span class="op">=</span><span class="dv">22</span>) <span class="co">#Label the bar</span></span>
+<span id="cb39-26"><a href="#cb39-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-27"><a href="#cb39-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-28"><a href="#cb39-28" aria-hidden="true" tabindex="-1"></a>ax2.bar(labels_isok, scores_quad, color<span class="op">=</span><span class="st">'#004AAD'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb39-29"><a href="#cb39-29" aria-hidden="true" tabindex="-1"></a>ax2.axhspan(q_12, q_32, color<span class="op">=</span><span class="st">'#64A846'</span>, alpha<span class="op">=</span><span class="fl">0.4</span>)  <span class="co">##Shading the IQR in a light green color</span></span>
+<span id="cb39-30"><a href="#cb39-30" aria-hidden="true" tabindex="-1"></a>ax2.text(<span class="dv">0</span>, scores_quad[<span class="dv">0</span>] <span class="op">+</span> <span class="dv">2</span>, <span class="ss">f'</span><span class="sc">{</span>scores_quad[<span class="dv">0</span>]<span class="sc">:.1f}</span><span class="ss">'</span>, ha<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb39-31"><a href="#cb39-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-32"><a href="#cb39-32" aria-hidden="true" tabindex="-1"></a>ax2.set_ylim(<span class="dv">0</span>, <span class="dv">120</span>) <span class="co">#Y-limit to 120 to imitate the original LEAP report</span></span>
+<span id="cb39-33"><a href="#cb39-33" aria-hidden="true" tabindex="-1"></a>ax2.tick_params(axis<span class="op">=</span><span class="st">'x'</span>, length<span class="op">=</span><span class="dv">0</span>) <span class="co">#Get rid of x-axis tick marks</span></span>
+<span id="cb39-34"><a href="#cb39-34" aria-hidden="true" tabindex="-1"></a>ax2.spines[<span class="st">'top'</span>].set_visible(<span class="va">False</span>) <span class="co">#Get rid of top spine of graph</span></span>
+<span id="cb39-35"><a href="#cb39-35" aria-hidden="true" tabindex="-1"></a>ax2.spines[<span class="st">'right'</span>].set_visible(<span class="va">False</span>) <span class="co">#Get rid of right spine of graph</span></span>
+<span id="cb39-36"><a href="#cb39-36" aria-hidden="true" tabindex="-1"></a>ax2.tick_params(axis<span class="op">=</span><span class="st">'y'</span>, length<span class="op">=</span><span class="dv">0</span>) <span class="co">#Get rid of y-axis tick marks(only having ticks on first subplot)</span></span>
+<span id="cb39-37"><a href="#cb39-37" aria-hidden="true" tabindex="-1"></a>ax2.set_xticklabels(labels_isok, fontsize<span class="op">=</span><span class="dv">22</span>) <span class="co">#Label the bar</span></span>
+<span id="cb39-38"><a href="#cb39-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-39"><a href="#cb39-39" aria-hidden="true" tabindex="-1"></a><span class="co">#Only setting y-ticks and labels for these values on both subplots</span></span>
+<span id="cb39-40"><a href="#cb39-40" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax <span class="kw">in</span> [ax1, ax2]:</span>
+<span id="cb39-41"><a href="#cb39-41" aria-hidden="true" tabindex="-1"></a>    ax.set_yticks([<span class="dv">0</span>, <span class="dv">40</span>, <span class="dv">80</span>, <span class="dv">120</span>])</span>
+<span id="cb39-42"><a href="#cb39-42" aria-hidden="true" tabindex="-1"></a>    ax.set_yticklabels([<span class="dv">0</span>, <span class="dv">40</span>, <span class="dv">80</span>, <span class="dv">120</span>], fontsize<span class="op">=</span><span class="dv">22</span>)</span>
+<span id="cb39-43"><a href="#cb39-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-44"><a href="#cb39-44" aria-hidden="true" tabindex="-1"></a><span class="co">#Overall Graph Title</span></span>
+<span id="cb39-45"><a href="#cb39-45" aria-hidden="true" tabindex="-1"></a>fig.suptitle(<span class="st">'Quadriceps and Hamstrings Strength at 60 °/s (Isokinetic)'</span>, fontsize<span class="op">=</span><span class="dv">22</span>)</span>
+<span id="cb39-46"><a href="#cb39-46" aria-hidden="true" tabindex="-1"></a>plt.tight_layout(rect<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.95</span>])</span>
+<span id="cb39-47"><a href="#cb39-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-48"><a href="#cb39-48" aria-hidden="true" tabindex="-1"></a><span class="co"># Saving the graph</span></span>
+<span id="cb39-49"><a href="#cb39-49" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'Strength_Comparison.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span>
+<span id="cb39-50"><a href="#cb39-50" aria-hidden="true" tabindex="-1"></a>plt.show() <span class="co">#Display the graph</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="dataviz_files/figure-html/cell-20-output-1.png" width="1109" height="553" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="7924d40c" class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>people <span class="op">=</span> [<span class="st">'Single Hop LSI'</span>, <span class="st">'Triple Hop LSI'</span>] <span class="co">#Different bar labels for each subplot</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> [<span class="fl">89.0</span>, <span class="fl">77.0</span>] <span class="co">#Patient LSI for SH and TH </span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Assigning to diff. variables to color differently</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>highlight_person1 <span class="op">=</span> [<span class="st">'Single Hop LSI'</span>] </span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>highlight_person2 <span class="op">=</span> [<span class="st">'Triple Hop LSI'</span>]</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a><span class="co">#Calculating IQRs (assumes visit2_data is already defined)</span></span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>sh_q1 <span class="op">=</span> visit2_data[<span class="st">'sh_lsi'</span>].quantile(<span class="fl">0.25</span>)</span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>sh_q3 <span class="op">=</span> visit2_data[<span class="st">'sh_lsi'</span>].quantile(<span class="fl">0.75</span>)</span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>th_q1 <span class="op">=</span> visit2_data[<span class="st">'th_lsi'</span>].quantile(<span class="fl">0.25</span>)</span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>th_q3 <span class="op">=</span> visit2_data[<span class="st">'th_lsi'</span>].quantile(<span class="fl">0.75</span>)</span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Setting font</span></span>
+<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a>plt.rc(<span class="st">'font'</span>, family<span class="op">=</span><span class="st">'Times New Roman'</span>)</span>
+<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a><span class="co">#Creating figure with two subplots</span></span>
+<span id="cb40-18"><a href="#cb40-18" aria-hidden="true" tabindex="-1"></a>fig, (ax1, ax2) <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>), sharey<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb40-19"><a href="#cb40-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-20"><a href="#cb40-20" aria-hidden="true" tabindex="-1"></a><span class="co">#First subplot</span></span>
+<span id="cb40-21"><a href="#cb40-21" aria-hidden="true" tabindex="-1"></a>colors1 <span class="op">=</span> [<span class="st">'#F67B2F'</span> <span class="cf">if</span> p <span class="kw">in</span> highlight_person1 <span class="cf">else</span> <span class="st">'gray'</span> <span class="cf">for</span> p <span class="kw">in</span> people[:<span class="dv">1</span>]]</span>
+<span id="cb40-22"><a href="#cb40-22" aria-hidden="true" tabindex="-1"></a>ax1.bar(people[:<span class="dv">1</span>], scores[:<span class="dv">1</span>], color<span class="op">=</span>colors1, alpha<span class="op">=</span><span class="fl">0.5</span>) <span class="co">#Plotting the patient's SH LSI as an orange bar</span></span>
+<span id="cb40-23"><a href="#cb40-23" aria-hidden="true" tabindex="-1"></a>ax1.axhspan(sh_q1, sh_q3, color<span class="op">=</span><span class="st">'#64A846'</span>, alpha<span class="op">=</span><span class="fl">0.4</span>) <span class="co">#Shading the IQR in a light green color</span></span>
+<span id="cb40-24"><a href="#cb40-24" aria-hidden="true" tabindex="-1"></a>ax1.text(<span class="dv">0</span>, scores[<span class="dv">0</span>] <span class="op">+</span> <span class="dv">2</span>, <span class="ss">f'</span><span class="sc">{</span>scores[<span class="dv">0</span>]<span class="sc">:.1f}</span><span class="ss">'</span>, ha<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">22</span>) </span>
+<span id="cb40-25"><a href="#cb40-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-26"><a href="#cb40-26" aria-hidden="true" tabindex="-1"></a>ax1.set_ylabel(<span class="st">'% Contralateral'</span>, fontsize<span class="op">=</span><span class="dv">22</span>) <span class="co">#Y-axis label</span></span>
+<span id="cb40-27"><a href="#cb40-27" aria-hidden="true" tabindex="-1"></a>ax1.set_xticklabels(highlight_person1, fontsize<span class="op">=</span><span class="dv">22</span>) <span class="co">#Label the bar</span></span>
+<span id="cb40-28"><a href="#cb40-28" aria-hidden="true" tabindex="-1"></a>ax1.set_ylim(<span class="dv">0</span>, <span class="dv">120</span>) <span class="co">#Y-limit to 120 to imitate the original LEAP report</span></span>
+<span id="cb40-29"><a href="#cb40-29" aria-hidden="true" tabindex="-1"></a>ax1.tick_params(axis<span class="op">=</span><span class="st">'x'</span>, rotation<span class="op">=</span><span class="dv">0</span>, length<span class="op">=</span><span class="dv">0</span>) <span class="co">#Get rid of x-axis tick marks</span></span>
+<span id="cb40-30"><a href="#cb40-30" aria-hidden="true" tabindex="-1"></a>ax1.tick_params(axis<span class="op">=</span><span class="st">'y'</span>, length<span class="op">=</span><span class="dv">0</span>) <span class="co">#Get rid of y-axis tick marks</span></span>
+<span id="cb40-31"><a href="#cb40-31" aria-hidden="true" tabindex="-1"></a>ax1.spines[<span class="st">'top'</span>].set_visible(<span class="va">False</span>) <span class="co">#Get rid of top spine of graph</span></span>
+<span id="cb40-32"><a href="#cb40-32" aria-hidden="true" tabindex="-1"></a>ax1.spines[<span class="st">'right'</span>].set_visible(<span class="va">False</span>) <span class="co">#Get rid of right spine of graph</span></span>
+<span id="cb40-33"><a href="#cb40-33" aria-hidden="true" tabindex="-1"></a>ax1.grid(<span class="va">False</span>) <span class="co">#No grid lines</span></span>
+<span id="cb40-34"><a href="#cb40-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-35"><a href="#cb40-35" aria-hidden="true" tabindex="-1"></a><span class="co">#Second subplot</span></span>
+<span id="cb40-36"><a href="#cb40-36" aria-hidden="true" tabindex="-1"></a>colors2 <span class="op">=</span> [<span class="st">'#F67B2F'</span> <span class="cf">if</span> p <span class="kw">in</span> highlight_person2 <span class="cf">else</span> <span class="st">'gray'</span> <span class="cf">for</span> p <span class="kw">in</span> people[<span class="dv">1</span>:]] </span>
+<span id="cb40-37"><a href="#cb40-37" aria-hidden="true" tabindex="-1"></a>ax2.bar(people[<span class="dv">1</span>:], scores[<span class="dv">1</span>:], color<span class="op">=</span>colors2, alpha<span class="op">=</span><span class="fl">0.5</span>) <span class="co">#Plotting the patient's TH LSI as an orange bar</span></span>
+<span id="cb40-38"><a href="#cb40-38" aria-hidden="true" tabindex="-1"></a>ax2.axhspan(th_q1, th_q3, color<span class="op">=</span><span class="st">'#64A846'</span>, alpha<span class="op">=</span><span class="fl">0.4</span>) <span class="co">#Shading the IQR in a light green color</span></span>
+<span id="cb40-39"><a href="#cb40-39" aria-hidden="true" tabindex="-1"></a>ax2.text(<span class="dv">0</span>, scores[<span class="dv">1</span>] <span class="op">+</span> <span class="dv">2</span>, <span class="ss">f'</span><span class="sc">{</span>scores[<span class="dv">1</span>]<span class="sc">:.1f}</span><span class="ss">'</span>, ha<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">22</span>)</span>
+<span id="cb40-40"><a href="#cb40-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-41"><a href="#cb40-41" aria-hidden="true" tabindex="-1"></a>ax2.set_xticklabels(highlight_person2, fontsize<span class="op">=</span><span class="dv">22</span>) <span class="co">#Label the bar</span></span>
+<span id="cb40-42"><a href="#cb40-42" aria-hidden="true" tabindex="-1"></a>ax2.set_ylim(<span class="dv">0</span>, <span class="dv">120</span>) <span class="co">#Y-limit to 120 to imitate the original LEAP report</span></span>
+<span id="cb40-43"><a href="#cb40-43" aria-hidden="true" tabindex="-1"></a>ax2.tick_params(axis<span class="op">=</span><span class="st">'x'</span>, rotation<span class="op">=</span><span class="dv">0</span>, length<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb40-44"><a href="#cb40-44" aria-hidden="true" tabindex="-1"></a>ax2.tick_params(axis<span class="op">=</span><span class="st">'y'</span>, length<span class="op">=</span><span class="dv">0</span>) <span class="co">#Get rid of y-axis tick marks</span></span>
+<span id="cb40-45"><a href="#cb40-45" aria-hidden="true" tabindex="-1"></a>ax2.spines[<span class="st">'top'</span>].set_visible(<span class="va">False</span>) <span class="co">#Get rid of top spine of graph</span></span>
+<span id="cb40-46"><a href="#cb40-46" aria-hidden="true" tabindex="-1"></a>ax2.spines[<span class="st">'right'</span>].set_visible(<span class="va">False</span>) <span class="co">#Get rid of right spine of graph</span></span>
+<span id="cb40-47"><a href="#cb40-47" aria-hidden="true" tabindex="-1"></a>ax2.grid(<span class="va">False</span>) <span class="co">#No grid lines</span></span>
+<span id="cb40-48"><a href="#cb40-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-49"><a href="#cb40-49" aria-hidden="true" tabindex="-1"></a><span class="co">#Only setting y-ticks and labels for these values on both subplots</span></span>
+<span id="cb40-50"><a href="#cb40-50" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax <span class="kw">in</span> [ax1, ax2]:</span>
+<span id="cb40-51"><a href="#cb40-51" aria-hidden="true" tabindex="-1"></a>    ax.set_yticks([<span class="dv">0</span>, <span class="dv">40</span>, <span class="dv">80</span>, <span class="dv">120</span>])</span>
+<span id="cb40-52"><a href="#cb40-52" aria-hidden="true" tabindex="-1"></a>    ax.set_yticklabels([<span class="dv">0</span>, <span class="dv">40</span>, <span class="dv">80</span>, <span class="dv">120</span>], fontsize<span class="op">=</span><span class="dv">22</span>)</span>
+<span id="cb40-53"><a href="#cb40-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-54"><a href="#cb40-54" aria-hidden="true" tabindex="-1"></a><span class="co">#Overall graph title</span></span>
+<span id="cb40-55"><a href="#cb40-55" aria-hidden="true" tabindex="-1"></a>fig.suptitle(<span class="st">'Single Limb Hop Tests'</span>, fontsize<span class="op">=</span><span class="dv">22</span>)</span>
+<span id="cb40-56"><a href="#cb40-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-57"><a href="#cb40-57" aria-hidden="true" tabindex="-1"></a>plt.tight_layout(rect<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.95</span>])</span>
+<span id="cb40-58"><a href="#cb40-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-59"><a href="#cb40-59" aria-hidden="true" tabindex="-1"></a><span class="co"># Saving the graph</span></span>
+<span id="cb40-60"><a href="#cb40-60" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'Single_Limb_Hop_Tests.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span>
+<span id="cb40-61"><a href="#cb40-61" aria-hidden="true" tabindex="-1"></a>plt.show() <span class="co">#Display graph</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="dataviz_files/figure-html/cell-21-output-1.png" width="1109" height="553" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="6cd3a692" class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>data[<span class="st">'tss_dashboard'</span>].value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="53">
+<pre><code>tss_dashboard
+5 to 7 months      2021
+3 to 4 months       948
+8 to 12 months      869
+Not Reported        311
+13 to 24 months     192
+Preoperative         30
+Name: count, dtype: int64</code></pre>
+</div>
+</div>
+<pre><code>tss_dashboard
+5 to 7 months      2021
+3 to 4 months       948
+8 to 12 months      869
+Not Reported        311
+13 to 24 months     192
+Preoperative         30
+Name: count, dtype: int64</code></pre>
+<div id="b225ee4c" class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Creating groups for TSS for long term graphs</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>group1 <span class="op">=</span> data[data[<span class="st">'tss_dashboard'</span>] <span class="op">==</span> <span class="st">'3 to 4 months'</span>]</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>group2 <span class="op">=</span> data[data[<span class="st">'tss_dashboard'</span>] <span class="op">==</span> <span class="st">'5 to 7 months'</span>]</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>group3 <span class="op">=</span> data[data[<span class="st">'tss_dashboard'</span>] <span class="op">==</span> <span class="st">'8 to 12 months'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Below code chunks are math for the long term graphs for quad strength LSI (isokinetic), TH LSI, and SH LSI.</p>
+<div id="b835b2d4" class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>aclext1 <span class="op">=</span> group1[<span class="st">'acl_ext_isok_60'</span>].quantile(<span class="fl">.25</span>)</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>aclext3 <span class="op">=</span> group1[<span class="st">'acl_ext_isok_60'</span>].quantile(<span class="fl">.75</span>)</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>conext1 <span class="op">=</span> group1[<span class="st">'con_ext_isok_60'</span>].quantile(<span class="fl">.25</span>)</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>conext3 <span class="op">=</span> group1[<span class="st">'con_ext_isok_60'</span>].quantile(<span class="fl">.75</span>)</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>aclflex1 <span class="op">=</span> group1[<span class="st">'acl_flex_isok_60'</span>].quantile(<span class="fl">.25</span>)</span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>aclflex3 <span class="op">=</span> group1[<span class="st">'acl_flex_isok_60'</span>].quantile(<span class="fl">.75</span>)</span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>conflex1  <span class="op">=</span> group1[<span class="st">'con_flex_isok_60'</span>].quantile(<span class="fl">.25</span>)</span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>conflex3  <span class="op">=</span> group1[<span class="st">'con_flex_isok_60'</span>].quantile(<span class="fl">.75</span>)</span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>th1 <span class="op">=</span> group1[<span class="st">'th_lsi'</span>].quantile(<span class="fl">.25</span>)</span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>th3 <span class="op">=</span> group1[<span class="st">'th_lsi'</span>].quantile(<span class="fl">.75</span>)</span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>sh1 <span class="op">=</span> group1[<span class="st">'sh_lsi'</span>].quantile(<span class="fl">.25</span>)</span>
+<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a>sh3 <span class="op">=</span> group1[<span class="st">'sh_lsi'</span>].quantile(<span class="fl">.75</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="24240333" class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>thg1 <span class="op">=</span> group1[<span class="st">'th_lsi'</span>].mean()</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>thg2 <span class="op">=</span> group2[<span class="st">'th_lsi'</span>].mean()</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>thg3 <span class="op">=</span> group3[<span class="st">'th_lsi'</span>].mean()</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(thg1)</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(thg2)</span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(thg3)</span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>th_iqr1 <span class="op">=</span> th3 <span class="op">-</span> th1</span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>th_iqr2 <span class="op">=</span> thg2 <span class="op">-</span> thg1</span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>th_iqr3 <span class="op">=</span> thg3 <span class="op">-</span> thg2</span>
+<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"IQR for THG Group 1: </span><span class="sc">{</span>th_iqr1<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"IQR for THG Group 2: </span><span class="sc">{</span>th_iqr2<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"IQR for THG Group 3: </span><span class="sc">{</span>th_iqr3<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>92.11706953
+93.59774779210657
+96.57852704372314
+IQR for THG Group 1: 8.317282607500005
+IQR for THG Group 2: 1.4806782621065793
+IQR for THG Group 3: 2.9807792516165676</code></pre>
+</div>
+</div>
+<pre><code>92.11706953
+93.59774779210657
+96.57852704372314
+IQR for THG Group 1: 8.317282607500005
+IQR for THG Group 2: 1.4806782621065793
+IQR for THG Group 3: 2.9807792516165676</code></pre>
+<div id="4a67f304" class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>shg1 <span class="op">=</span> group1[<span class="st">'sh_lsi'</span>].mean()</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>shg2 <span class="op">=</span> group2[<span class="st">'sh_lsi'</span>].mean()</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>shg3 <span class="op">=</span> group3[<span class="st">'sh_lsi'</span>].mean()</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(shg1)</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(shg2)</span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(shg3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>87.59511333887096
+91.77343810911961
+94.66267309151702</code></pre>
+</div>
+</div>
+<pre><code>87.59511333887096
+91.77343810911961
+94.66267309151702</code></pre>
+<div id="c5fedf0b" class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Data (calculated above)</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>th_means <span class="op">=</span> [thg1, thg2, thg3]</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>tss_dashboard <span class="op">=</span> [<span class="st">'3-4 months'</span>, <span class="st">'5-7 months'</span>, <span class="st">'8-12 months'</span>]</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Calculate IQRs</span></span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>th_iqr1 <span class="op">=</span> th3 <span class="op">-</span> th1</span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>th_iqr2 <span class="op">=</span> thg2 <span class="op">-</span> thg1</span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>th_iqr3 <span class="op">=</span> thg3 <span class="op">-</span> thg2</span>
+<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a><span class="co">#Define lower and upper bounds for shading</span></span>
+<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a>lower_bounds <span class="op">=</span> [thg1 <span class="op">-</span> th_iqr1 <span class="op">/</span> <span class="dv">2</span>, thg2 <span class="op">-</span> th_iqr2 <span class="op">/</span> <span class="dv">2</span>, thg3 <span class="op">-</span> th_iqr3 <span class="op">/</span> <span class="dv">2</span>]</span>
+<span id="cb52-12"><a href="#cb52-12" aria-hidden="true" tabindex="-1"></a>upper_bounds <span class="op">=</span> [thg1 <span class="op">+</span> th_iqr1 <span class="op">/</span> <span class="dv">2</span>, thg2 <span class="op">+</span> th_iqr2 <span class="op">/</span> <span class="dv">2</span>, thg3 <span class="op">+</span> th_iqr3 <span class="op">/</span> <span class="dv">2</span>]</span>
+<span id="cb52-13"><a href="#cb52-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-14"><a href="#cb52-14" aria-hidden="true" tabindex="-1"></a><span class="co">#Setting font</span></span>
+<span id="cb52-15"><a href="#cb52-15" aria-hidden="true" tabindex="-1"></a>plt.rc(<span class="st">'font'</span>, family<span class="op">=</span><span class="st">'Times New Roman'</span>, size<span class="op">=</span><span class="dv">22</span>)</span>
+<span id="cb52-16"><a href="#cb52-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-17"><a href="#cb52-17" aria-hidden="true" tabindex="-1"></a><span class="co">#Creating figure and plotting data</span></span>
+<span id="cb52-18"><a href="#cb52-18" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
+<span id="cb52-19"><a href="#cb52-19" aria-hidden="true" tabindex="-1"></a>plt.plot(</span>
+<span id="cb52-20"><a href="#cb52-20" aria-hidden="true" tabindex="-1"></a>    tss_dashboard,</span>
+<span id="cb52-21"><a href="#cb52-21" aria-hidden="true" tabindex="-1"></a>    th_means,</span>
+<span id="cb52-22"><a href="#cb52-22" aria-hidden="true" tabindex="-1"></a>    marker<span class="op">=</span><span class="st">'o'</span>,</span>
+<span id="cb52-23"><a href="#cb52-23" aria-hidden="true" tabindex="-1"></a>    markersize<span class="op">=</span><span class="dv">10</span>,  <span class="co"># Match large dot size</span></span>
+<span id="cb52-24"><a href="#cb52-24" aria-hidden="true" tabindex="-1"></a>    linestyle<span class="op">=</span><span class="st">'-'</span>,</span>
+<span id="cb52-25"><a href="#cb52-25" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb52-26"><a href="#cb52-26" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'royalblue'</span>,</span>
+<span id="cb52-27"><a href="#cb52-27" aria-hidden="true" tabindex="-1"></a>    alpha<span class="op">=</span><span class="fl">0.5</span>,</span>
+<span id="cb52-28"><a href="#cb52-28" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">'Mean TH LSI'</span></span>
+<span id="cb52-29"><a href="#cb52-29" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb52-30"><a href="#cb52-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-31"><a href="#cb52-31" aria-hidden="true" tabindex="-1"></a><span class="co">#Shade IQR in light green</span></span>
+<span id="cb52-32"><a href="#cb52-32" aria-hidden="true" tabindex="-1"></a>plt.fill_between(tss_dashboard, lower_bounds, upper_bounds, color<span class="op">=</span><span class="st">'#64A846'</span>, alpha<span class="op">=</span><span class="fl">0.4</span>, label<span class="op">=</span><span class="st">'IQR'</span>)</span>
+<span id="cb52-33"><a href="#cb52-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-34"><a href="#cb52-34" aria-hidden="true" tabindex="-1"></a><span class="co">#Label the means for each TSS group</span></span>
+<span id="cb52-35"><a href="#cb52-35" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> tss, th <span class="kw">in</span> <span class="bu">zip</span>(tss_dashboard, th_means):</span>
+<span id="cb52-36"><a href="#cb52-36" aria-hidden="true" tabindex="-1"></a>    plt.text(tss, th <span class="op">+</span> <span class="fl">1.5</span>, <span class="ss">f'</span><span class="sc">{</span>th<span class="sc">:.1f}</span><span class="ss">'</span>, ha<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb52-37"><a href="#cb52-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-38"><a href="#cb52-38" aria-hidden="true" tabindex="-1"></a><span class="co">#Highlight specific patient point with red dot to indicate patient is not in IQR range</span></span>
+<span id="cb52-39"><a href="#cb52-39" aria-hidden="true" tabindex="-1"></a>plt.scatter(<span class="st">'5-7 months'</span>, <span class="fl">77.0</span>, color<span class="op">=</span><span class="st">'red'</span>, s<span class="op">=</span><span class="dv">100</span>, zorder<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb52-40"><a href="#cb52-40" aria-hidden="true" tabindex="-1"></a>plt.text(<span class="st">'5-7 months'</span>, <span class="fl">77.0</span> <span class="op">+</span> <span class="fl">1.5</span>, <span class="st">'77.0'</span>, color<span class="op">=</span><span class="st">'black'</span>, ha<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb52-41"><a href="#cb52-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-42"><a href="#cb52-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-43"><a href="#cb52-43" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> plt.gca()</span>
+<span id="cb52-44"><a href="#cb52-44" aria-hidden="true" tabindex="-1"></a>ax.set_yticks(<span class="bu">range</span>(<span class="dv">50</span>, <span class="dv">101</span>, <span class="dv">10</span>))</span>
+<span id="cb52-45"><a href="#cb52-45" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'TH LSI % Progression (Mean)'</span>)</span>
+<span id="cb52-46"><a href="#cb52-46" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time Since Surgery'</span>)</span>
+<span id="cb52-47"><a href="#cb52-47" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'TH LSI (%)'</span>)</span>
+<span id="cb52-48"><a href="#cb52-48" aria-hidden="true" tabindex="-1"></a>plt.ylim(<span class="dv">50</span>, <span class="bu">max</span>(upper_bounds) <span class="op">+</span> <span class="dv">10</span>)</span>
+<span id="cb52-49"><a href="#cb52-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-50"><a href="#cb52-50" aria-hidden="true" tabindex="-1"></a>ax.spines[<span class="st">'top'</span>].set_visible(<span class="va">False</span>)</span>
+<span id="cb52-51"><a href="#cb52-51" aria-hidden="true" tabindex="-1"></a>ax.spines[<span class="st">'right'</span>].set_visible(<span class="va">False</span>)</span>
+<span id="cb52-52"><a href="#cb52-52" aria-hidden="true" tabindex="-1"></a>plt.tick_params(axis<span class="op">=</span><span class="st">'x'</span>, length<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb52-53"><a href="#cb52-53" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">False</span>)</span>
+<span id="cb52-54"><a href="#cb52-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-55"><a href="#cb52-55" aria-hidden="true" tabindex="-1"></a><span class="co"># Saving the graph</span></span>
+<span id="cb52-56"><a href="#cb52-56" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'TH_LSI_Progression.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span>
+<span id="cb52-57"><a href="#cb52-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-58"><a href="#cb52-58" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb52-59"><a href="#cb52-59" aria-hidden="true" tabindex="-1"></a>plt.show() <span class="co">#Display graph</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="dataviz_files/figure-html/cell-27-output-1.png" width="726" height="726" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="fa056cb7" class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>interest_patient[<span class="st">'tss'</span>].value_counts() <span class="co">#seeing how far along interest patient was at the second visit (falls into second bin for long term graphs)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="59">
+<pre><code>tss
+3.1     1
+7.5     1
+13.1    1
+Name: count, dtype: int64</code></pre>
+</div>
+</div>
+<pre><code>3.1     1
+7.5     1
+13.1    1
+Name: tss, dtype: int64</code></pre>
+<div id="9a8b51a6" class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Setting font</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>rcParams[<span class="st">'font.family'</span>] <span class="op">=</span> <span class="st">'Times New Roman'</span></span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>rcParams[<span class="st">'font.size'</span>] <span class="op">=</span> <span class="dv">22</span></span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Data (calculated above)</span></span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>sh_means <span class="op">=</span> [shg1, shg2, shg3]</span>
+<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a>tss_dashboard <span class="op">=</span> [<span class="st">'3-4 months'</span>, <span class="st">'5-7 months'</span>, <span class="st">'8-12 months'</span>]</span>
+<span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-9"><a href="#cb56-9" aria-hidden="true" tabindex="-1"></a><span class="co">#IQR values</span></span>
+<span id="cb56-10"><a href="#cb56-10" aria-hidden="true" tabindex="-1"></a>sh_iqr1 <span class="op">=</span> sh3 <span class="op">-</span> sh1</span>
+<span id="cb56-11"><a href="#cb56-11" aria-hidden="true" tabindex="-1"></a>sh_iqr2 <span class="op">=</span> shg2 <span class="op">-</span> shg1</span>
+<span id="cb56-12"><a href="#cb56-12" aria-hidden="true" tabindex="-1"></a>sh_iqr3 <span class="op">=</span> shg3 <span class="op">-</span> shg2</span>
+<span id="cb56-13"><a href="#cb56-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-14"><a href="#cb56-14" aria-hidden="true" tabindex="-1"></a><span class="co">#Bounds for shading</span></span>
+<span id="cb56-15"><a href="#cb56-15" aria-hidden="true" tabindex="-1"></a>lower_bounds <span class="op">=</span> [shg1 <span class="op">-</span> sh_iqr1 <span class="op">/</span> <span class="dv">2</span>, shg2 <span class="op">-</span> sh_iqr2 <span class="op">/</span> <span class="dv">2</span>, shg3 <span class="op">-</span> sh_iqr3 <span class="op">/</span> <span class="dv">2</span>]</span>
+<span id="cb56-16"><a href="#cb56-16" aria-hidden="true" tabindex="-1"></a>upper_bounds <span class="op">=</span> [shg1 <span class="op">+</span> sh_iqr1 <span class="op">/</span> <span class="dv">2</span>, shg2 <span class="op">+</span> sh_iqr2 <span class="op">/</span> <span class="dv">2</span>, shg3 <span class="op">+</span> sh_iqr3 <span class="op">/</span> <span class="dv">2</span>]</span>
+<span id="cb56-17"><a href="#cb56-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-18"><a href="#cb56-18" aria-hidden="true" tabindex="-1"></a><span class="co">#Create figure</span></span>
+<span id="cb56-19"><a href="#cb56-19" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
+<span id="cb56-20"><a href="#cb56-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-21"><a href="#cb56-21" aria-hidden="true" tabindex="-1"></a><span class="co">#Shade IQR in light green</span></span>
+<span id="cb56-22"><a href="#cb56-22" aria-hidden="true" tabindex="-1"></a>plt.fill_between(tss_dashboard, lower_bounds, upper_bounds, color<span class="op">=</span><span class="st">'#64A846'</span>, alpha<span class="op">=</span><span class="fl">0.4</span>)</span>
+<span id="cb56-23"><a href="#cb56-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-24"><a href="#cb56-24" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot line and points for means in each TSS group</span></span>
+<span id="cb56-25"><a href="#cb56-25" aria-hidden="true" tabindex="-1"></a>plt.plot(</span>
+<span id="cb56-26"><a href="#cb56-26" aria-hidden="true" tabindex="-1"></a>    tss_dashboard,</span>
+<span id="cb56-27"><a href="#cb56-27" aria-hidden="true" tabindex="-1"></a>    sh_means,</span>
+<span id="cb56-28"><a href="#cb56-28" aria-hidden="true" tabindex="-1"></a>    marker<span class="op">=</span><span class="st">'o'</span>,</span>
+<span id="cb56-29"><a href="#cb56-29" aria-hidden="true" tabindex="-1"></a>    markersize<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb56-30"><a href="#cb56-30" aria-hidden="true" tabindex="-1"></a>    linestyle<span class="op">=</span><span class="st">'-'</span>,</span>
+<span id="cb56-31"><a href="#cb56-31" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb56-32"><a href="#cb56-32" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'royalblue'</span>,</span>
+<span id="cb56-33"><a href="#cb56-33" aria-hidden="true" tabindex="-1"></a>    alpha<span class="op">=</span><span class="fl">0.5</span></span>
+<span id="cb56-34"><a href="#cb56-34" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb56-35"><a href="#cb56-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-36"><a href="#cb56-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Annotate mean values</span></span>
+<span id="cb56-37"><a href="#cb56-37" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> tss, val <span class="kw">in</span> <span class="bu">zip</span>(tss_dashboard, sh_means):</span>
+<span id="cb56-38"><a href="#cb56-38" aria-hidden="true" tabindex="-1"></a>    plt.text(tss, val <span class="op">+</span> <span class="fl">1.5</span>, <span class="ss">f'</span><span class="sc">{</span>val<span class="sc">:.1f}</span><span class="ss">'</span>, ha<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb56-39"><a href="#cb56-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-40"><a href="#cb56-40" aria-hidden="true" tabindex="-1"></a><span class="co">#Specific patient dot labeled and colored red to indicate not in IQR range</span></span>
+<span id="cb56-41"><a href="#cb56-41" aria-hidden="true" tabindex="-1"></a>plt.scatter(<span class="st">'5-7 months'</span>, <span class="fl">89.0</span>, color<span class="op">=</span><span class="st">'green'</span>, s<span class="op">=</span><span class="dv">100</span>, zorder<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb56-42"><a href="#cb56-42" aria-hidden="true" tabindex="-1"></a>plt.text(<span class="st">'5-7 months'</span>, <span class="fl">89.0</span> <span class="op">-</span> <span class="fl">2.5</span>, <span class="st">'89.0'</span>, color<span class="op">=</span><span class="st">'black'</span>, ha<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb56-43"><a href="#cb56-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-44"><a href="#cb56-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-45"><a href="#cb56-45" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> plt.gca()</span>
+<span id="cb56-46"><a href="#cb56-46" aria-hidden="true" tabindex="-1"></a>ax.set_yticks(<span class="bu">range</span>(<span class="dv">50</span>, <span class="dv">101</span>, <span class="dv">10</span>))</span>
+<span id="cb56-47"><a href="#cb56-47" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'SH LSI % Progression (Mean)'</span>)</span>
+<span id="cb56-48"><a href="#cb56-48" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time Since Surgery'</span>)</span>
+<span id="cb56-49"><a href="#cb56-49" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'SH LSI (%)'</span>)</span>
+<span id="cb56-50"><a href="#cb56-50" aria-hidden="true" tabindex="-1"></a>plt.ylim(<span class="dv">50</span>, <span class="bu">max</span>(upper_bounds) <span class="op">+</span> <span class="dv">10</span>)</span>
+<span id="cb56-51"><a href="#cb56-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-52"><a href="#cb56-52" aria-hidden="true" tabindex="-1"></a>ax.spines[<span class="st">'top'</span>].set_visible(<span class="va">False</span>)</span>
+<span id="cb56-53"><a href="#cb56-53" aria-hidden="true" tabindex="-1"></a>ax.spines[<span class="st">'right'</span>].set_visible(<span class="va">False</span>)</span>
+<span id="cb56-54"><a href="#cb56-54" aria-hidden="true" tabindex="-1"></a>plt.tick_params(axis<span class="op">=</span><span class="st">'x'</span>, rotation<span class="op">=</span><span class="dv">0</span>, length<span class="op">=</span><span class="dv">0</span>) </span>
+<span id="cb56-55"><a href="#cb56-55" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">False</span>)</span>
+<span id="cb56-56"><a href="#cb56-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-57"><a href="#cb56-57" aria-hidden="true" tabindex="-1"></a><span class="co"># Saving the graph</span></span>
+<span id="cb56-58"><a href="#cb56-58" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'SH_LSI_Progression.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span>
+<span id="cb56-59"><a href="#cb56-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-60"><a href="#cb56-60" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb56-61"><a href="#cb56-61" aria-hidden="true" tabindex="-1"></a>plt.show() <span class="co">#Display graph</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="dataviz_files/figure-html/cell-29-output-1.png" width="726" height="726" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>These are the calculations for the mean quad lsi (isokinetic) for the long term graph below.</p>
+<div id="1c0a6b17" class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>aclext <span class="op">=</span> group1[<span class="st">'acl_ext_isok_60'</span>].mean()</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>conext <span class="op">=</span> group1[<span class="st">'con_ext_isok_60'</span>].mean()</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>avglsi <span class="op">=</span> (aclext <span class="op">/</span> conext ) <span class="op">*</span><span class="dv">100</span></span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(avglsi)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>64.43505233441954</code></pre>
+</div>
+</div>
+<pre><code>64.43505233441954</code></pre>
+<div id="55825689" class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>aclextg2 <span class="op">=</span> group2[<span class="st">'acl_ext_isok_60'</span>].mean()</span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>conextg2 <span class="op">=</span> group2[<span class="st">'con_ext_isok_60'</span>].mean()</span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>avglsig2 <span class="op">=</span> (aclextg2 <span class="op">/</span> conextg2 ) <span class="op">*</span><span class="dv">100</span></span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(avglsig2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>76.32076941124286</code></pre>
+</div>
+</div>
+<pre><code>76.32076941124286</code></pre>
+<div id="f3ce3a30" class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>aclextg3 <span class="op">=</span> group3[<span class="st">'acl_ext_isok_60'</span>].mean()</span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>conextg3 <span class="op">=</span> group3[<span class="st">'con_ext_isok_60'</span>].mean()</span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>avglsig3 <span class="op">=</span> (aclextg3 <span class="op">/</span> conextg3 ) <span class="op">*</span><span class="dv">100</span></span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(avglsig3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>77.91215082321446</code></pre>
+</div>
+</div>
+<pre><code>77.91215082321446</code></pre>
+<div id="83dac871" class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Setting Font</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>rcParams[<span class="st">'font.family'</span>] <span class="op">=</span> <span class="st">'Times New Roman'</span></span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>rcParams[<span class="st">'font.size'</span>] <span class="op">=</span> <span class="dv">22</span></span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a><span class="co">#LSI means for quads (isokinetic); calculated above</span></span>
+<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a>lsi_means <span class="op">=</span> [avglsi, avglsig2, avglsig3]</span>
+<span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a>tss_dashboard <span class="op">=</span> [<span class="st">'3-4 months'</span>, <span class="st">'5-7 months'</span>, <span class="st">'8-12 months'</span>]</span>
+<span id="cb66-8"><a href="#cb66-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-9"><a href="#cb66-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute IQRs for ACL extension strength (not LSI directly; because of missing data</span></span>
+<span id="cb66-10"><a href="#cb66-10" aria-hidden="true" tabindex="-1"></a>iqr1 <span class="op">=</span> group1[<span class="st">'acl_ext_isok_60'</span>].quantile(<span class="fl">0.75</span>) <span class="op">-</span> group1[<span class="st">'acl_ext_isok_60'</span>].quantile(<span class="fl">0.25</span>)</span>
+<span id="cb66-11"><a href="#cb66-11" aria-hidden="true" tabindex="-1"></a>iqr2 <span class="op">=</span> group2[<span class="st">'acl_ext_isok_60'</span>].quantile(<span class="fl">0.75</span>) <span class="op">-</span> group2[<span class="st">'acl_ext_isok_60'</span>].quantile(<span class="fl">0.25</span>)</span>
+<span id="cb66-12"><a href="#cb66-12" aria-hidden="true" tabindex="-1"></a>iqr3 <span class="op">=</span> group3[<span class="st">'acl_ext_isok_60'</span>].quantile(<span class="fl">0.75</span>) <span class="op">-</span> group3[<span class="st">'acl_ext_isok_60'</span>].quantile(<span class="fl">0.25</span>)</span>
+<span id="cb66-13"><a href="#cb66-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-14"><a href="#cb66-14" aria-hidden="true" tabindex="-1"></a><span class="co">#Compute upper and lower bounds for shading</span></span>
+<span id="cb66-15"><a href="#cb66-15" aria-hidden="true" tabindex="-1"></a>lower_bounds <span class="op">=</span> [avglsi <span class="op">-</span> iqr1 <span class="op">/</span> <span class="dv">2</span>, avglsig2 <span class="op">-</span> iqr2 <span class="op">/</span> <span class="dv">2</span>, avglsig3 <span class="op">-</span> iqr3 <span class="op">/</span> <span class="dv">2</span>]</span>
+<span id="cb66-16"><a href="#cb66-16" aria-hidden="true" tabindex="-1"></a>upper_bounds <span class="op">=</span> [avglsi <span class="op">+</span> iqr1 <span class="op">/</span> <span class="dv">2</span>, avglsig2 <span class="op">+</span> iqr2 <span class="op">/</span> <span class="dv">2</span>, avglsig3 <span class="op">+</span> iqr3 <span class="op">/</span> <span class="dv">2</span>]</span>
+<span id="cb66-17"><a href="#cb66-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-18"><a href="#cb66-18" aria-hidden="true" tabindex="-1"></a><span class="co">#Create figure</span></span>
+<span id="cb66-19"><a href="#cb66-19" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
+<span id="cb66-20"><a href="#cb66-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-21"><a href="#cb66-21" aria-hidden="true" tabindex="-1"></a><span class="co">#Shade IQR region in light green</span></span>
+<span id="cb66-22"><a href="#cb66-22" aria-hidden="true" tabindex="-1"></a>plt.fill_between(tss_dashboard, lower_bounds, upper_bounds, color<span class="op">=</span><span class="st">'#64A846'</span>, alpha<span class="op">=</span><span class="fl">0.4</span>)</span>
+<span id="cb66-23"><a href="#cb66-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-24"><a href="#cb66-24" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot points and trend line for values </span></span>
+<span id="cb66-25"><a href="#cb66-25" aria-hidden="true" tabindex="-1"></a>plt.plot(</span>
+<span id="cb66-26"><a href="#cb66-26" aria-hidden="true" tabindex="-1"></a>    tss_dashboard,</span>
+<span id="cb66-27"><a href="#cb66-27" aria-hidden="true" tabindex="-1"></a>    lsi_means,</span>
+<span id="cb66-28"><a href="#cb66-28" aria-hidden="true" tabindex="-1"></a>    marker<span class="op">=</span><span class="st">'o'</span>,</span>
+<span id="cb66-29"><a href="#cb66-29" aria-hidden="true" tabindex="-1"></a>    markersize<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb66-30"><a href="#cb66-30" aria-hidden="true" tabindex="-1"></a>    linestyle<span class="op">=</span><span class="st">'-'</span>,</span>
+<span id="cb66-31"><a href="#cb66-31" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb66-32"><a href="#cb66-32" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">'royalblue'</span>,</span>
+<span id="cb66-33"><a href="#cb66-33" aria-hidden="true" tabindex="-1"></a>    alpha<span class="op">=</span><span class="fl">0.5</span></span>
+<span id="cb66-34"><a href="#cb66-34" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb66-35"><a href="#cb66-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-36"><a href="#cb66-36" aria-hidden="true" tabindex="-1"></a><span class="co">#Label mean values</span></span>
+<span id="cb66-37"><a href="#cb66-37" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> tss, val <span class="kw">in</span> <span class="bu">zip</span>(tss_dashboard, lsi_means):</span>
+<span id="cb66-38"><a href="#cb66-38" aria-hidden="true" tabindex="-1"></a>    plt.text(tss, val <span class="op">+</span> <span class="fl">1.5</span>, <span class="ss">f'</span><span class="sc">{</span>val<span class="sc">:.1f}</span><span class="ss">'</span>, ha<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb66-39"><a href="#cb66-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-40"><a href="#cb66-40" aria-hidden="true" tabindex="-1"></a><span class="co">#Specific patient point labeled and colored green to indicate within/above IQR range</span></span>
+<span id="cb66-41"><a href="#cb66-41" aria-hidden="true" tabindex="-1"></a>plt.scatter(<span class="st">'5-7 months'</span>, <span class="fl">93.10</span>, color<span class="op">=</span><span class="st">'#64A846'</span>, s<span class="op">=</span><span class="dv">100</span>, zorder<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb66-42"><a href="#cb66-42" aria-hidden="true" tabindex="-1"></a>plt.text(<span class="st">'5-7 months'</span>, <span class="fl">93.10</span> <span class="op">+</span> <span class="fl">1.5</span>, <span class="st">'93.1'</span>, color<span class="op">=</span><span class="st">'black'</span>, ha<span class="op">=</span><span class="st">'center'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb66-43"><a href="#cb66-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-44"><a href="#cb66-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-45"><a href="#cb66-45" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> plt.gca()</span>
+<span id="cb66-46"><a href="#cb66-46" aria-hidden="true" tabindex="-1"></a>ax.set_yticks(<span class="bu">range</span>(<span class="dv">50</span>, <span class="dv">101</span>, <span class="dv">10</span>))</span>
+<span id="cb66-47"><a href="#cb66-47" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Quadricep Strength Recovery (Mean LSI %)'</span>, fontsize<span class="op">=</span><span class="dv">22</span>)</span>
+<span id="cb66-48"><a href="#cb66-48" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time Since Surgery'</span>, fontsize<span class="op">=</span><span class="dv">22</span>)</span>
+<span id="cb66-49"><a href="#cb66-49" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Contralateral (%)'</span>, fontsize<span class="op">=</span><span class="dv">22</span>)</span>
+<span id="cb66-50"><a href="#cb66-50" aria-hidden="true" tabindex="-1"></a>plt.ylim(<span class="dv">50</span>, <span class="bu">max</span>(upper_bounds) <span class="op">+</span> <span class="dv">30</span>)</span>
+<span id="cb66-51"><a href="#cb66-51" aria-hidden="true" tabindex="-1"></a>ax.spines[<span class="st">'top'</span>].set_visible(<span class="va">False</span>)</span>
+<span id="cb66-52"><a href="#cb66-52" aria-hidden="true" tabindex="-1"></a>ax.spines[<span class="st">'right'</span>].set_visible(<span class="va">False</span>)</span>
+<span id="cb66-53"><a href="#cb66-53" aria-hidden="true" tabindex="-1"></a>plt.tick_params(axis<span class="op">=</span><span class="st">'x'</span>, length<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb66-54"><a href="#cb66-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-55"><a href="#cb66-55" aria-hidden="true" tabindex="-1"></a><span class="co"># Saving the graph</span></span>
+<span id="cb66-56"><a href="#cb66-56" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'Quadricep_Strength_Recovery.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span>
+<span id="cb66-57"><a href="#cb66-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-58"><a href="#cb66-58" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb66-59"><a href="#cb66-59" aria-hidden="true" tabindex="-1"></a>plt.show() <span class="co">#Display graph</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="dataviz_files/figure-html/cell-33-output-1.png" width="726" height="726" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
 
 
 
