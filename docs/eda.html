@@ -211,7 +211,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div id="9c2e2343" class="cell" data-execution_count="1">
+<div id="b26d6123" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#import libraries</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -221,7 +221,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">"ignore"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="47a77460" class="cell" data-execution_count="2">
+<div id="8cc12c61" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">### Load data</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.read_csv(<span class="st">'ACLR_data.csv'</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>data.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -803,7 +803,7 @@ NaN
 5 rows × 60 columns
 </p>
 </div>
-<div id="6e827614" class="cell" data-execution_count="3">
+<div id="59bd4e9a" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Age Histogram after dropping individuals over the age of 25</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>plt.hist(data[<span class="st">'age'</span>], bins <span class="op">=</span> <span class="dv">15</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Age'</span>)</span>
@@ -824,7 +824,7 @@ NaN
 </div>
 </div>
 </div>
-<div id="8e297629" class="cell" data-execution_count="4">
+<div id="f213d0c8" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Histogram of ACL RSI for Patients</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>plt.hist(data[<span class="st">'acl_rsi'</span>], bins <span class="op">=</span> <span class="dv">10</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'ACL RSI'</span>)</span>
@@ -845,7 +845,7 @@ NaN
 </div>
 </div>
 </div>
-<div id="98c3844e" class="cell" data-execution_count="5">
+<div id="3bbbf23f" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(data[<span class="st">'age'</span>], data[<span class="st">'ikdc'</span>])</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Age'</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'IKDC'</span>)</span>
@@ -865,7 +865,7 @@ NaN
 </div>
 </div>
 </div>
-<div id="4fb6421f" class="cell" data-execution_count="6">
+<div id="eaa1e8d1" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Calculating correlation coefficient between age and ikdc</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>correlation_coefficient <span class="op">=</span> data[[<span class="st">'age'</span>, <span class="st">'ikdc'</span>]].corr().iloc[<span class="dv">0</span>,<span class="dv">1</span>]</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(correlation_coefficient)</span>
@@ -875,7 +875,7 @@ NaN
 </div>
 </div>
 <pre><code>-0.17753340913066273</code></pre>
-<div id="08bda04b" class="cell" data-execution_count="7">
+<div id="e08ecacf" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(data[<span class="st">'age'</span>], data[<span class="st">'acl_rsi'</span>])</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Age'</span>)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'ACL RSI'</span>)</span>
@@ -895,7 +895,7 @@ NaN
 </div>
 </div>
 </div>
-<div id="ad1ff407" class="cell" data-execution_count="8">
+<div id="2d1c6bc5" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>correlation_coefficient2 <span class="op">=</span> data[[<span class="st">'age'</span>, <span class="st">'acl_rsi'</span>]].corr().iloc[<span class="dv">0</span>,<span class="dv">1</span>]</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(correlation_coefficient2)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#Correlation is still not super strong</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -904,7 +904,7 @@ NaN
 </div>
 </div>
 <pre><code>-0.16640606532621763</code></pre>
-<div id="1ad261d2" class="cell" data-execution_count="9">
+<div id="f265f0a1" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>plt.hist(data[<span class="st">'tss_dashboard'</span>], bins <span class="op">=</span> <span class="dv">4</span>)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time Since Surgery Group'</span>)</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Count'</span>)</span>
@@ -924,7 +924,7 @@ NaN
 </div>
 </div>
 </div>
-<div id="75993629" class="cell" data-execution_count="10">
+<div id="66f835f1" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>plt.hist(data[<span class="st">'lsi_ext_isok_60'</span>])</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'LSI For Isokinetic Knee Extension'</span>)</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Count'</span>)</span>
@@ -944,7 +944,7 @@ NaN
 </div>
 </div>
 </div>
-<div id="fd590450" class="cell" data-execution_count="11">
+<div id="e1445706" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>lsi_ext_isok_60_mean <span class="op">=</span> np.mean(data[<span class="st">'lsi_ext_isok_60'</span>])</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(lsi_ext_isok_60_mean, <span class="st">'%'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -952,7 +952,7 @@ NaN
 </div>
 </div>
 <pre><code>73.83709135616758 %</code></pre>
-<div id="41077f63" class="cell" data-execution_count="12">
+<div id="c8ba4268" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Peak Torque recorded and normalized to body mass</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>plt.hist(data[<span class="st">'acl_flex_isok_60'</span>])</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'ACLR Isokinetic Flexion Torque'</span>)</span>
@@ -973,7 +973,7 @@ NaN
 </div>
 </div>
 </div>
-<div id="425a02d0" class="cell" data-execution_count="13">
+<div id="b7761ce0" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(data[<span class="st">'bmi'</span>], data[<span class="st">'sh_lsi'</span>])</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'BMI'</span>)</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Single Hop LSI'</span>)</span>
@@ -993,7 +993,7 @@ NaN
 </div>
 </div>
 </div>
-<div id="42028950" class="cell" data-execution_count="14">
+<div id="07aa8bef" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Histogram of Single Hop LSI</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>plt.hist(data[<span class="st">'sh_lsi'</span>])</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Single Hop LSI'</span>)</span>
@@ -1014,7 +1014,7 @@ NaN
 </div>
 </div>
 </div>
-<div id="9e4173d7" class="cell" data-execution_count="15">
+<div id="42130009" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Histogram of Triple Hop LSI</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>plt.hist(data[<span class="st">'th_lsi'</span>])</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Triple Hop LSI'</span>)</span>
@@ -1035,7 +1035,7 @@ NaN
 </div>
 </div>
 </div>
-<div id="e0c2aa02" class="cell" data-execution_count="16">
+<div id="8fe20b75" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>green_mask <span class="op">=</span> data[<span class="st">'sh_lsi'</span>] <span class="op">&gt;</span> <span class="dv">85</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1070,7 +1070,7 @@ NaN
 </div>
 </div>
 <p>Patients are usually cleared for return to sports after an ACL surgery from 5-12 months. Lets look at their mental readiness (acl_rsi) at these times:</p>
-<div id="4a31221f" class="cell" data-execution_count="17">
+<div id="1ca4b9b3" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>group_5_7_months <span class="op">=</span> data[data[<span class="st">'tss_dashboard'</span>] <span class="op">==</span> <span class="st">'5 to 7 months'</span>]</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>group_8_12_months <span class="op">=</span> data[data[<span class="st">'tss_dashboard'</span>] <span class="op">==</span> <span class="st">'8 to 12 months'</span>]</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1102,7 +1102,7 @@ NaN
 </div>
 </div>
 </div>
-<div id="017b6b31" class="cell" data-execution_count="18">
+<div id="daca0b55" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>counts <span class="op">=</span> data[<span class="st">'visit_graft'</span>].value_counts()</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>plt.bar(counts.index, counts.values)</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Graft Type at Visit'</span>)</span>
@@ -1127,7 +1127,7 @@ NaN
 </div>
 </div>
 <p>BTB and HS autograft appears to be the most common graph types used. We want to examine them further:</p>
-<div id="edd38fc3" class="cell" data-execution_count="19">
+<div id="cc9a2876" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>btb_data <span class="op">=</span> data[data[<span class="st">'visit_graft'</span>] <span class="op">==</span> <span class="st">'BTB autograft'</span>]</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>hs_data <span class="op">=</span> data[data[<span class="st">'visit_graft'</span>] <span class="op">==</span> <span class="st">'HS autograft'</span>]</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
@@ -1156,7 +1156,7 @@ NaN
 </div>
 </div>
 </div>
-<div id="e5bcf5bb" class="cell" data-execution_count="20">
+<div id="c2e62922" class="cell" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Looking further at the means of ACL RSI for BTB and HS grafts</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>mean_btb <span class="op">=</span> np.mean(btb_data[<span class="st">'acl_rsi'</span>])</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>mean_hs <span class="op">=</span> np.mean(hs_data[<span class="st">'acl_rsi'</span>])</span>
@@ -1168,7 +1168,7 @@ Mean ACL RSI for HS:  69.58213018867924</code></pre>
 </div>
 <pre><code>Mean ACL RSI for BTB:  66.71625423728814 
 Mean ACL RSI for HS:  69.58213018867924</code></pre>
-<div id="006f96cc" class="cell" data-execution_count="21">
+<div id="f51cb5ff" class="cell" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>plt.hist(data[<span class="st">'redcap_event_name'</span>], bins <span class="op">=</span> <span class="dv">5</span>)</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Event Name'</span>)</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Count'</span>)</span>
@@ -1190,7 +1190,7 @@ Mean ACL RSI for HS:  69.58213018867924</code></pre>
 </div>
 </div>
 <p>Most of the patients only have data for their first 1-2 visits.</p>
-<div id="36bec413" class="cell" data-execution_count="22">
+<div id="284281ce" class="cell" data-execution_count="22">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>helpful_data_clean <span class="op">=</span> data.dropna(subset<span class="op">=</span>[<span class="st">'acl_rsi'</span>])</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">8</span>))</span>
@@ -1220,7 +1220,7 @@ Mean ACL RSI for HS:  69.58213018867924</code></pre>
 </div>
 </div>
 <p>Looking at patients return ACL_RSI at different times since their surgery.</p>
-<div id="629a2ad7" class="cell" data-execution_count="23">
+<div id="aeaeb913" class="cell" data-execution_count="23">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>average_acl_rsi_per_visit <span class="op">=</span> data.groupby(<span class="st">'tss_dashboard'</span>)[<span class="st">'acl_rsi'</span>].mean()</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Mean ACL RSI at Visit:'</span>, average_acl_rsi_per_visit)</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>iqr_per_time <span class="op">=</span> {}</span>
@@ -1259,7 +1259,7 @@ Name: acl_rsi, dtype: float64
 IQR for each time period: {'13 to 24 months': 37.285, '3 to 4 months': 35.0, '5 to 7 months': 33.3, '8 to 12 months': 31.975, 'Not Reported': 37.7225, 'Preoperative': nan}
 IQR for ACL RSI: 36.67</code></pre>
 <p>Looking at the correlation matrix of some variables we plan to use in our report:</p>
-<div id="85ee2596" class="cell" data-execution_count="24">
+<div id="8ee3b479" class="cell" data-execution_count="24">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>important_data <span class="op">=</span> data[[<span class="st">'age'</span>, <span class="st">'acl_rsi'</span>, <span class="st">'koos_pain'</span>, <span class="st">'lsi_ext_isok_60'</span>, <span class="st">'lsi_flex_isok_60'</span>, <span class="st">'lsi_ext_mvic_60'</span>, <span class="st">'lsi_flex_mvic_60'</span>, <span class="st">'sh_lsi'</span>, <span class="st">'th_lsi'</span>]]</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>correlation_matrix <span class="op">=</span> important_data.corr()</span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>sns.heatmap(correlation_matrix, annot<span class="op">=</span><span class="va">True</span>, cmap<span class="op">=</span><span class="st">'coolwarm'</span>, fmt<span class="op">=</span><span class="st">'.2f'</span>, cbar<span class="op">=</span><span class="va">True</span>, square<span class="op">=</span><span class="va">True</span>, linewidths<span class="op">=</span><span class="fl">0.5</span>, linecolor<span class="op">=</span><span class="st">'black'</span>)</span>
@@ -1276,7 +1276,7 @@ IQR for ACL RSI: 36.67</code></pre>
 <pre><code>&lt;Figure size 1152x768 with 0 Axes&gt;</code></pre>
 </div>
 </div>
-<div id="75119e11" class="cell" data-execution_count="25">
+<div id="897b6607" class="cell" data-execution_count="25">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Looking at descriptive statistics for some of the variables we used in our report</span></span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>pd.DataFrame(important_data.describe())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="25">
@@ -1698,7 +1698,7 @@ inf
 </table>
 </div>
 <p>Examining the correlation between ACLRSI and KOOS pain as they are both measures of mental readiness.</p>
-<div id="7eee92da" class="cell" data-execution_count="26">
+<div id="d739fb89" class="cell" data-execution_count="26">
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Looking at correlation between ACL RSI and KOOS Pain</span></span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">'font.family'</span>] <span class="op">=</span> <span class="st">'Georgia'</span></span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>sns.lmplot(x<span class="op">=</span><span class="st">'acl_rsi'</span>, y<span class="op">=</span><span class="st">'koos_pain'</span>, data<span class="op">=</span>data, line_kws<span class="op">=</span>{<span class="st">'color'</span>: <span class="st">'red'</span>})</span>
