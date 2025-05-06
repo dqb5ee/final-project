@@ -1,8 +1,5 @@
----
-title: "Data Dictionary"
-format: html
-toc: true
----
+# Data Dictionary {.unnumbered}
+
 
 This document contains a data dictionary for the patient data collected in the study. Each variable is defined below:
 

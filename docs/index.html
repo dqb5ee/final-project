@@ -123,25 +123,25 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./datacleaning.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Data Cleaning</span></span></a>
+ <span class="menu-text">Data Cleaning</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./eda.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">eda.html</span></span></a>
+ <span class="menu-text">Exploratory Data Analysis</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dataviz.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Data Visualization</span></span></a>
+ <span class="menu-text">Data Visualizations</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./datadictionary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Dictionary</span></span></a>
+ <span class="menu-text">Data Dictionary</span></a>
   </div>
 </li>
     </ul>
@@ -200,7 +200,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="report" class="level1 unnumbered">
 <h1 class="unnumbered">Report</h1>
 <p><img src="images/leap2.0.png" class="img-fluid"></p>
-<p><em>Figure: Clinical LEAP report showing assessment results after ACL reconstruction.</em></p>
+<p><em>Figure: Our updated clinical LEAP report showing assessment results after ACL reconstruction.</em></p>
 <section id="prepared-for" class="level2">
 <h2 class="anchored" data-anchor-id="prepared-for">Prepared for</h2>
 <p>UVA Orthopedic Center Therapy Services<br>
@@ -209,18 +209,24 @@ Charlottesville, VA</p>
 </section>
 <section id="problem-statement" class="level2">
 <h2 class="anchored" data-anchor-id="problem-statement">Problem Statement</h2>
-<p>It is crucial that both patients and physicians are able to use and interpret a LEAP Report to track a patient’s ACLR recovery, but for very different purposes. Patients want to see where they stack up against other people in the recovery process, and physicians need to track specific details to tailor a recovery plan. Patients may have a hard time digesting the current LEAP report as it is information dense and does not provide significant context or explanation of the functional and strength assessments and what they mean. The medical jargon included in the LEAP report that patients receive in their check up appointments following surgery may be meaningless and overwhelming for them. While revamping this report will provide clarity for patients, it is also critical to leave in certain features of the report that are necessary for accessibility, organization, and use by physicians. These features include name, date of birth, height, weight, age, the limb that surgery was performed on, and the dates of surgery and tests. Additionally, certain graphs that the LEAP report uses are vital for physicians, but could still be improved for readability and clarity for all parties involved.</p>
+<p>It is crucial that both patients and physicians are able to use and interpret a LEAP Report to track a patient’s ACLR recovery, though these interpretations are for very different purposes. Patients want to see where they stack up against other people in the recovery process and what time of progress they should be making at this point in recovery while physicians need to track specific details to tailor a recovery plan.</p>
+<p><img src="images/leap.png" class="img-fluid"> <em>Figure: Original clinical LEAP report showing assessment results after ACL reconstruction.</em></p>
+<p>As shown above, patients may have a hard time digesting the current LEAP report as it is information dense and does not provide significant context or explanation of the functional and strength assessments and what they mean. The medical jargon included in the LEAP report that patients receive in their check up appointments following surgery may be meaningless and overwhelming for them.</p>
+<p>While revamping this report will provide clarity for patients, it is also critical to leave in certain features of the report that are necessary for accessibility, organization, and use by physicians. These features include name, date of birth, height, weight, age, the limb that surgery was performed on, and the dates of surgery and tests. Additionally, certain graphs that the LEAP report uses are vital for physicians, but could still be improved for readability and clarity for all parties involved.</p>
 <hr>
 </section>
 <section id="analysis" class="level2">
 <h2 class="anchored" data-anchor-id="analysis">Analysis</h2>
-<p>Our idea to improve the ability of patients to comprehend a LEAP report is to incorporate graphs that let the patient plot themself within the general trend of ACL patients in recovery for various statistics. We will also include definitions for all metrics and descriptions in layman’s terms alongside them. For example, “after 6 months of recovery, most patients have X% strength, this is where you stand…” and “patients that perform better on strength and functional assessments (insert specific ones) report higher ACL RSI scores.”</p>
-<p>A way to take this further would be creating an interactive graph then when a patient’s data gets uploaded into the report, the report is able to plot them on the graphs and give them tailored, understandable feedback based on where they stand with each metric and overall.</p>
+<p>In order to improve the patient-friendliness of the LEAP report while also preserving its functionality for physicians, we want to redesign the graphs and format of the LEAP report to include definitions of medical jargon or terms a patient may be unfamiliar with, eliminate unnecessary standards with no clinical evidence behind them, and plot the patient as an individual point in long term trend graphs to allow them to see where they are at in recovery and where they should aim to be by the next visit.&nbsp;</p>
+<p>A major improvement for the current graphs in the LEAP report is eliminating the meaningless standard of 90% and replacing it with an IQR range of all patients at that respective visit for that strength or functional assessment. This acts somewhat like a percentile chart as the patient can see if they fall within, below, or above the IQR range for that specific assessment. This simultaneously preserves physician functionality as it presents the same data, just in a more patient-friendly format. Additionally, the incorporation of graphs that display the mean value/score for major functional, physiological, and strength assessments in each “time since surgery” bucket allows a patient to see how they are doing compared to other people at this point in time, and where they should be looking to be by their next visit.</p>
+<p>The original LEAP report did not offer any visualizations or data regarding long term recovery. Now, a patient’s data is plotted as a green or red dot (depending on whether they fall in the IQR range) against the trend lines, which lets them know where they stand in a digestible way. The overall aesthetic of the report was also improved, which strengthens its clarity and ability to effectively convey information to a patient.</p>
 <hr>
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>We will explain the context behind these strength tests and functional assessments and provide additional information on why they are important, what they mean for a patient in terms of recovery, and what an ACL RSI or LSI score is. We will also explain the terms that are used heavily by doctors when discussing a patient and his/her recovery and progress, so that the patient will better be able to digest what this means for them specifically. Allowing a patient to know where they stand will improve their ability to interact and engage in strength/recovery programs, ideally allowing them to make a safe, quick return to activity.</p>
+<p>The results of the functional, strength, and physiological assessments presented in a LEAP report are critical in determining whether a patient is ready to return to sport or physical activity. While the original LEAP report may have scored highly in terms of physician utility, its use of medical jargon, arbitrary benchmarks (e.g., 80%, 85%, 90%), lack of long-term data, and poor aesthetic design limited its effectiveness in communicating meaningful information to patients.</p>
+<p>Defining terms such as isokinetic, isometric, LSI, and RSI allows patients to better understand and interpret the graphs presented to them. LSI, or Limb Symmetry Index, refers to the functional symmetry between the injured limb and the uninjured limb. In ACL recovery, muscle imbalances and asymmetry are common due to weakness in the injured leg. A low LSI indicates that the patient is not yet ready to return to physical activity. RSI, or Return to Sport Index, is a psychological measure of a patient’s self-perceived readiness to return to sport. This metric is also important in assessing overall recovery. The updated LEAP report includes a graph showing the upward trend of RSI scores as time since surgery increases, offering greater context and insight than merely listing the patient’s current RSI score.</p>
+<p>The improved report enables patients to better understand the data presented, compare their progress to others at similar recovery stages, and identify target milestones for their next visit. A report that fails to effectively communicate this critical information will be less helpful in guiding patients through their ACL recovery journey.</p>
 
 
 </section>
@@ -649,7 +655,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
   <div class="nav-page nav-page-next">
       <a href="./datacleaning.html" class="pagination-link" aria-label="Data Cleaning">
-        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Data Cleaning</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text">Data Cleaning</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -1,0 +1,2398 @@
+# Exploratory Data Analysis {.unnumbered}
+
+
+```python
+#import libraries
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import seaborn as sns
+
+import warnings
+warnings.filterwarnings("ignore")
+```
+
+After reading through the sources about the variables contained within the dataset, I discovered that the data is nested as multiple rows have the same record id- many patients went to multiple visits. There are also grouped variables, such as age, which is split into a few different groups (12-14, 15-17, 18-20, 21-25, 26-34 years old), time since surgery, which is in months and then was grouped in the dashboard variable (3-4 months, 5-7 months, 8-12 months, 13-24 months after surgery).
+
+
+```python
+### Load data
+data = pd.read_csv('./ACLR.csv')
+data.head()
+data.info()
+```
+
+    <class 'pandas.core.frame.DataFrame'>
+    RangeIndex: 11150 entries, 0 to 11149
+    Data columns (total 63 columns):
+     #   Column                     Non-Null Count  Dtype  
+    ---  ------                     --------------  -----  
+     0   record_id                  11150 non-null  int64  
+     1   redcap_event_name          11150 non-null  object 
+     2   redcap_repeat_instrument   0 non-null      float64
+     3   sex_dashboard              4737 non-null   object 
+     4   graft_dashboard2           4737 non-null   object 
+     5   med_meniscus               4121 non-null   float64
+     6   lat_meniscus               4121 non-null   float64
+     7   lat_stab                   3662 non-null   float64
+     8   physis                     936 non-null    float64
+     9   visit_sex                  5234 non-null   object 
+     10  visit_graft                5234 non-null   object 
+     11  age                        5126 non-null   float64
+     12  age_group                  5126 non-null   float64
+     13  age_group_dashboard        4724 non-null   float64
+     14  age_group_dashboard_use    5237 non-null   object 
+     15  height_m                   2518 non-null   float64
+     16  mass_kg                    3251 non-null   float64
+     17  bmi                        2517 non-null   float64
+     18  tss                        5125 non-null   float64
+     19  tss_dashboard              5237 non-null   object 
+     20  reinjury                   5175 non-null   object 
+     21  ikdc                       2951 non-null   float64
+     22  pedi_ikdc                  1647 non-null   float64
+     23  marx                       911 non-null    float64
+     24  pedi_fabs                  37 non-null     float64
+     25  koos_version               2637 non-null   float64
+     26  koos_pain                  2767 non-null   float64
+     27  koos_sx                    2769 non-null   float64
+     28  koos_adl                   2769 non-null   float64
+     29  koos_sport                 2768 non-null   float64
+     30  koos_qol                   2775 non-null   float64
+     31  acl_rsi                    3400 non-null   float64
+     32  tsk                        1011 non-null   float64
+     33  tss_tegner                 0 non-null      float64
+     34  tegner_pre                 2302 non-null   float64
+     35  tegner_now                 2175 non-null   float64
+     36  acl_sh                     2444 non-null   float64
+     37  con_sh                     2445 non-null   float64
+     38  sh_lsi                     2442 non-null   float64
+     39  acl_th                     1551 non-null   float64
+     40  con_th                     1558 non-null   float64
+     41  th_lsi                     1552 non-null   float64
+     42  acl_ch                     1410 non-null   float64
+     43  con_ch                     1356 non-null   float64
+     44  ch_lsi                     1350 non-null   float64
+     45  acl_ext_mvic_90            698 non-null    float64
+     46  con_ext_mvic_90            700 non-null    float64
+     47  lsi_ext_mvic_90            698 non-null    float64
+     48  acl_ext_mvic_60            1019 non-null   float64
+     49  con_ext_mvic_60            1019 non-null   float64
+     50  lsi_ext_mvic_60            1019 non-null   float64
+     51  acl_flex_mvic_60           1011 non-null   float64
+     52  con_flex_mvic_60           1008 non-null   float64
+     53  lsi_flex_mvic_60           1009 non-null   float64
+     54  acl_ext_isok_60            1740 non-null   float64
+     55  con_ext_isok_60            1754 non-null   float64
+     56  lsi_ext_isok_60            2227 non-null   float64
+     57  acl_flex_isok_60           1733 non-null   float64
+     58  con_flex_isok_60           1748 non-null   float64
+     59  lsi_flex_isok_60           2222 non-null   float64
+     60  strength_testing_complete  5237 non-null   float64
+     61  rts                        686 non-null    float64
+     62  rts_tss                    671 non-null    float64
+    dtypes: float64(54), int64(1), object(8)
+    memory usage: 5.4+ MB
+
+
+
+```python
+data.shape
+```
+
+
+
+
+    (11150, 63)
+
+
+
+
+```python
+nan_counts = data.isna().sum()
+
+print(nan_counts)
+```
+
+    record_id                        0
+    redcap_event_name                0
+    redcap_repeat_instrument     11150
+    sex_dashboard                 6413
+    graft_dashboard2              6413
+                                 ...  
+    con_flex_isok_60              9402
+    lsi_flex_isok_60              8928
+    strength_testing_complete     5913
+    rts                          10464
+    rts_tss                      10479
+    Length: 63, dtype: int64
+
+
+For redcap repeat instrument, removal will be best because every value is missing.
+
+
+```python
+data = data.drop(columns=['redcap_repeat_instrument'])
+```
+
+
+```python
+data['redcap_event_name'].value_counts()
+```
+
+
+
+
+    redcap_event_name
+    baseline_arm_1              4737
+    visit_1_arm_1               3276
+    visit_2_arm_1               1313
+    long_term_outcomes_arm_1    1174
+    visit_3_arm_1                372
+    visit_4_arm_1                117
+    visit_5_arm_1                 56
+    visit_6_arm_1                 36
+    visit_9_arm_1                 33
+    visit_7_arm_1                 20
+    visit_8_arm_1                 14
+    data_upload_arm_2              2
+    Name: count, dtype: int64
+
+
+
+
+```python
+baseline_visit_count = (data['redcap_event_name'] == 'baseline_arm_1').sum()
+print(f"Number of Baseline Visit entries: {baseline_visit_count}")
+```
+
+    Number of Baseline Visit entries: 4737
+
+
+
+```python
+#Counting number of patients with at least baseline, visit 1, visit 2, and long term outcomes.
+important_redcap_events = {'baseline_arm_1', 'visit_1_arm_1', 'visit_2_arm_1', 'long_term_outcomes_arm_1'}
+records_with_events = data.groupby('record_id')['redcap_event_name'].unique()
+
+
+records_with_all_events = records_with_events[records_with_events.apply(lambda x: important_redcap_events.issubset(set(x)))]
+
+record_ids_2 = records_with_all_events.index.tolist()
+
+#print(record_ids_2)
+```
+
+
+```python
+helpful_data = data[data['record_id'].isin(record_ids_2)]
+print((helpful_data.shape))
+helpful_data.head()
+```
+
+    (436, 62)
+
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>record_id</th>
+      <th>redcap_event_name</th>
+      <th>sex_dashboard</th>
+      <th>graft_dashboard2</th>
+      <th>med_meniscus</th>
+      <th>lat_meniscus</th>
+      <th>lat_stab</th>
+      <th>physis</th>
+      <th>visit_sex</th>
+      <th>visit_graft</th>
+      <th>...</th>
+      <th>lsi_flex_mvic_60</th>
+      <th>acl_ext_isok_60</th>
+      <th>con_ext_isok_60</th>
+      <th>lsi_ext_isok_60</th>
+      <th>acl_flex_isok_60</th>
+      <th>con_flex_isok_60</th>
+      <th>lsi_flex_isok_60</th>
+      <th>strength_testing_complete</th>
+      <th>rts</th>
+      <th>rts_tss</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>3</th>
+      <td>2</td>
+      <td>baseline_arm_1</td>
+      <td>Female</td>
+      <td>HS autograft</td>
+      <td>1.0</td>
+      <td>3.0</td>
+      <td>1.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2</td>
+      <td>visit_1_arm_1</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Female</td>
+      <td>HS autograft</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>0.97</td>
+      <td>2.16</td>
+      <td>45.0</td>
+      <td>0.88</td>
+      <td>1.2</td>
+      <td>72.98</td>
+      <td>2.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2</td>
+      <td>visit_2_arm_1</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Female</td>
+      <td>HS autograft</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>2</td>
+      <td>visit_3_arm_1</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Female</td>
+      <td>HS autograft</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>2</td>
+      <td>long_term_outcomes_arm_1</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>3.0</td>
+      <td>76.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 62 columns</p>
+</div>
+
+
+
+
+```python
+data = data[data['age'] <= 25] #Dropping people under the age of 25 to be more reflective of trends in ACL recovery for younger people
+```
+
+I do not think 'Not Reported' and 'nan' will be helpful in achieving the final goal of analyzing a subset of patients.
+
+
+```python
+#Getting an interest patient for example chart
+interest_patient = data[data['record_id'] == 1473]
+```
+
+
+```python
+interest_patient.head()
+print(interest_patient['lsi_ext_mvic_60'])
+```
+
+    4129    53.78
+    4130    68.81
+    4131    70.27
+    Name: lsi_ext_mvic_60, dtype: float64
+
+
+
+```python
+interest_patient['th_lsi'].value_counts()
+```
+
+
+
+
+    Series([], Name: th_lsi, dtype: int64)
+
+
+
+
+```python
+interest_patient['con_th'].value_counts()
+```
+
+
+
+
+    Series([], Name: con_th, dtype: int64)
+
+
+
+
+```python
+print(interest_patient['sh_lsi'])
+```
+
+    4129      NaN
+    4130    83.33
+    4131    99.33
+    Name: sh_lsi, dtype: float64
+
+
+
+```python
+#data.columns.tolist()
+```
+
+
+```python
+#interest_patient.columns.tolist()
+```
+
+
+```python
+#Age Histogram after dropping individuals over the age of 25
+plt.hist(data['age'], bins = 15)
+plt.xlabel('Age')
+plt.ylabel('Count')
+plt.title('Age of Individuals Distribution')
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['right'].set_visible(False)
+plt.gca().spines['left'].set_visible(False)
+plt.tick_params(axis='y', which='both',length=0)
+
+# Saving the graph
+plt.savefig("images/age_dist_histogram.png", dpi=300, bbox_inches="tight")
+print("![plot](./images/age_dist_histogram.png")
+plt.show()
+```
+
+
+    
+![png](output_22_0.png)
+    
+
+
+This shows that there is a lot more data under for individuals under the age of 25- probably a subset we would be more interested in.
+
+Sex_Dashboard is empty for helpful_data, so I am going to drop it and use visit sex for reference instead.
+
+
+```python
+#Histogram of ACL RSI for Patients
+plt.hist(data['acl_rsi'], bins = 10)
+plt.xlabel('ACL RSI')
+plt.ylabel('Count')
+plt.title('ACL RSI Distribution for Patients')
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['right'].set_visible(False)
+plt.gca().spines['left'].set_visible(False)
+plt.tick_params(axis='y', which='both',length=0)
+
+# Saving the graph
+plt.savefig("images/acl_rsi_histogram.png", dpi=300, bbox_inches="tight")
+print("![plot](./images/acl_rsi_histogram.png")
+plt.show()
+```
+
+
+    
+![png](output_25_0.png)
+    
+
+
+Note- this histogram is skewed left
+
+Most of Pedi_ikdc is missing. I think the best method of handling this many missing values
+
+
+```python
+data = data.drop(columns=['pedi_ikdc'])
+```
+
+
+```python
+plt.scatter(data['age'], data['ikdc'])
+plt.xlabel('Age')
+plt.ylabel('IKDC')
+plt.title('Is IKDC Correlated to the Age of the Patient?')
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['right'].set_visible(False)
+plt.gca().spines['left'].set_visible(False)
+plt.tick_params(axis='y', which='both',length=0)
+
+# Saving the graph
+plt.savefig("images/ikdc_age_scatter.png", dpi=300, bbox_inches="tight")
+print("![plot](./images/ikdc_age_scatter.png")
+plt.show()
+```
+
+
+    
+![png](output_29_0.png)
+    
+
+
+
+```python
+#Calculating correlation coefficient between age and ikdc
+correlation_coefficient = data[['age', 'ikdc']].corr().iloc[0,1]
+print(correlation_coefficient)
+#Not close to negative 1, indicating there is not a strong correlation.
+```
+
+    -0.17753340913066273
+
+
+
+```python
+missing_counts = data.isna().sum()
+missing_counts
+```
+
+
+
+
+    record_id                       0
+    redcap_event_name               0
+    sex_dashboard                4371
+    graft_dashboard2             4371
+    med_meniscus                 4371
+                                 ... 
+    con_flex_isok_60             2833
+    lsi_flex_isok_60             2359
+    strength_testing_complete       0
+    rts                          4371
+    rts_tss                      4371
+    Length: 61, dtype: int64
+
+
+
+
+```python
+summary_statistics = data.describe()
+print(summary_statistics)
+```
+
+             record_id  med_meniscus  lat_meniscus  lat_stab  physis          age  \
+    count  4371.000000           0.0           0.0       0.0     0.0  4371.000000   
+    mean   2086.563715           NaN           NaN       NaN     NaN    17.306231   
+    std    1539.267182           NaN           NaN       NaN     NaN     2.633281   
+    min       1.000000           NaN           NaN       NaN     NaN     8.855556   
+    25%     808.500000           NaN           NaN       NaN     NaN    15.680556   
+    50%    1534.000000           NaN           NaN       NaN     NaN    17.000000   
+    75%    3361.000000           NaN           NaN       NaN     NaN    18.561944   
+    max    4738.000000           NaN           NaN       NaN     NaN    25.000000   
+    
+             age_group  age_group_dashboard     height_m      mass_kg  ...  \
+    count  4371.000000          4319.000000  1967.000000  2684.000000  ...   
+    mean      3.266301             3.293586     1.724147    73.015708  ...   
+    std       0.889042             0.858671     0.106787    19.508640  ...   
+    min       1.000000             2.000000     1.300000     0.000000  ...   
+    25%       3.000000             3.000000     1.650000    60.330000  ...   
+    50%       3.000000             3.000000     1.700000    69.000000  ...   
+    75%       4.000000             4.000000     1.800000    81.925000  ...   
+    max       5.000000             5.000000     3.230000   208.000000  ...   
+    
+           lsi_flex_mvic_60  acl_ext_isok_60  con_ext_isok_60  lsi_ext_isok_60  \
+    count            986.00      1530.000000      1544.000000      2017.000000   
+    mean                inf         1.682020         2.258479        73.837091   
+    std                 NaN         0.589578         0.645303        22.203231   
+    min               25.32         0.270000         0.390000        10.967185   
+    25%               67.60         1.280000         1.852418        59.035326   
+    50%               80.41         1.630000         2.250000        74.380000   
+    75%               93.47         2.048631         2.681793        86.760000   
+    max                 inf         6.010000         7.390000       247.370000   
+    
+           acl_flex_isok_60  con_flex_isok_60  lsi_flex_isok_60  \
+    count       1523.000000       1538.000000       2012.000000   
+    mean           1.109044          1.252070         90.162087   
+    std            0.387971          0.361846         18.787932   
+    min            0.100000          0.030000         22.550000   
+    25%            0.850000          1.020000         79.630000   
+    50%            1.080000          1.240000         90.383888   
+    75%            1.350000          1.460000        100.660837   
+    max            4.710000          5.110000        311.110000   
+    
+           strength_testing_complete  rts  rts_tss  
+    count                4371.000000  0.0      0.0  
+    mean                    1.644475  NaN      NaN  
+    std                     0.764713  NaN      NaN  
+    min                     0.000000  NaN      NaN  
+    25%                     2.000000  NaN      NaN  
+    50%                     2.000000  NaN      NaN  
+    75%                     2.000000  NaN      NaN  
+    max                     2.000000  NaN      NaN  
+    
+    [8 rows x 53 columns]
+
+
+
+```python
+plt.scatter(data['age'], data['acl_rsi'])
+plt.xlabel('Age')
+plt.ylabel('ACL RSI')
+plt.title('Is ACL RSI Correlated to the Age of the Patient?')
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['right'].set_visible(False)
+plt.gca().spines['left'].set_visible(False)
+plt.tick_params(axis='y', which='both',length=0)
+
+# Saving the graph
+plt.savefig("images/acl_rsi_age_scatter.png", dpi=300, bbox_inches="tight")
+print("![plot](./images/acl_rsi_age_scatter.png")
+plt.show()
+```
+
+
+    
+![png](output_33_0.png)
+    
+
+
+
+```python
+correlation_coefficient2 = data[['age', 'acl_rsi']].corr().iloc[0,1]
+print(correlation_coefficient2)
+#Correlation is still not super strong
+```
+
+    -0.16640606532621763
+
+
+
+```python
+plt.hist(data['tss_dashboard'], bins = 4)
+plt.xlabel('Time Since Surgery Group')
+plt.ylabel('Count')
+plt.title('Time Since Surgery Distribution')
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['right'].set_visible(False)
+plt.gca().spines['left'].set_visible(False)
+plt.tick_params(axis='y', which='both',length=0)
+# Saving the graph
+plt.savefig("images/tss_dashboard_histogram.png", dpi=300, bbox_inches="tight")
+print("![plot](./images/tss_dashboard_histogram.png")
+plt.show()
+```
+
+
+    
+![png](output_35_0.png)
+    
+
+
+A lot more of the data is coming from patients who were 5-12 months into their recovery.
+
+
+```python
+data['lsi_ext_isok_60'].value_counts()
+```
+
+
+
+
+    100.000000    8
+    50.000000     6
+    88.890000     5
+    66.670000     5
+    79.000000     5
+                 ..
+    103.080000    1
+    90.570000     1
+    57.700000     1
+    29.610000     1
+    85.435897     1
+    Name: lsi_ext_isok_60, Length: 1821, dtype: int64
+
+
+
+
+```python
+plt.hist(data['lsi_ext_isok_60'])
+plt.xlabel('LSI For Isokinetic Knee Extension')
+plt.ylabel('Count')
+plt.title('LSI for Isokinetic Knee Extension Distribution')
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['right'].set_visible(False)
+plt.gca().spines['left'].set_visible(False)
+plt.tick_params(axis='y', which='both',length=0)
+
+# Saving the graph
+plt.savefig("images/lsi_ext_isok_60_histogram.png", dpi=300, bbox_inches="tight")
+print("![plot](./images/lsi_ext_isok_60_histogram.png")
+plt.show()
+```
+
+
+    
+![png](output_38_0.png)
+    
+
+
+Shows us there is an outlier.
+
+
+```python
+lsi_ext_isok_60_mean = np.mean(data['lsi_ext_isok_60'])
+print(lsi_ext_isok_60_mean, '%')
+```
+
+    73.83709135616758 %
+
+
+
+```python
+#Peak Torque recorded and normalized to body mass
+plt.hist(data['acl_flex_isok_60'])
+plt.xlabel('ACLR Isokinetic Flexion Torque')
+plt.ylabel('Count')
+plt.title('ACLR Isokinetic Flexion Torque Distribution')
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['right'].set_visible(False)
+plt.gca().spines['left'].set_visible(False)
+plt.tick_params(axis='y', which='both',length=0)
+
+# Saving the graph
+plt.savefig("images/aclr_isok_flexion_histogram.png", dpi=300, bbox_inches="tight")
+print("![plot](./images/aclr_isok_flexion_histogram.png")
+plt.show()
+```
+
+
+    
+![png](output_41_0.png)
+    
+
+
+
+```python
+plt.scatter(data['bmi'], data['sh_lsi'])
+plt.xlabel('BMI')
+plt.ylabel('Single Hop LSI')
+plt.title('Correlation between Single Hop LSI and BMI')
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['right'].set_visible(False)
+plt.gca().spines['left'].set_visible(False)
+plt.tick_params(axis='y', which='both',length=0)
+
+# Saving the graph
+plt.savefig("images/sh_lsi_bmi_scatter.png", dpi=300, bbox_inches="tight")
+print("![plot](./images/sh_lsi_bmi_scatter.png")
+plt.show()
+```
+
+
+    
+![png](output_42_0.png)
+    
+
+
+
+```python
+green_mask = data['sh_lsi'] > 85
+
+
+plt.scatter(data['tss_dashboard'][~green_mask], data['sh_lsi'][~green_mask], color='blue', label='sh_lsi <= 85')
+
+plt.scatter(data['tss_dashboard'][green_mask], data['sh_lsi'][green_mask], color='green', label='sh_lsi > 85')
+
+
+plt.xlabel('Time Since Surgery Groups')
+plt.ylabel('Single Hop LSI')
+plt.title('Any Correlation between Single Hop LSI and Time Since Surgery?')
+
+
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['right'].set_visible(False)
+plt.gca().spines['left'].set_visible(False)
+
+
+plt.tick_params(axis='y', which='both', length=0)
+
+
+plt.legend(loc='upper left', bbox_to_anchor=(1, 1), title='LSI Conditions')
+
+# Saving the graph
+plt.savefig("images/sh_lsi_tss_dashboard_scatter.png", dpi=300, bbox_inches="tight")
+print("![plot](./images/sh_lsi_tss_dashboard_scatter.png")
+plt.show()
+```
+
+
+    
+![png](output_43_0.png)
+    
+
+
+
+```python
+group_5_7_months = data[data['tss_dashboard'] == '5 to 7 months']
+group_8_12_months = data[data['tss_dashboard'] == '8 to 12 months']
+
+plt.figure(figsize=(10, 6))
+
+sns.kdeplot(group_5_7_months['acl_rsi'], label='5 to 7 months', fill=True, color='blue')
+sns.kdeplot(group_8_12_months['acl_rsi'], label='8 to 12 months', fill=True, color='green')
+
+plt.xlabel('ACL RSI')
+plt.ylabel('Density')
+plt.title('Distribution of ACL RSI Scores for Groups 5 to 7 Months and 8 to 12 Months')
+
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['right'].set_visible(False)
+plt.gca().spines['left'].set_visible(False)
+
+plt.tick_params(axis='y', which='both', length=0)
+
+
+plt.legend(loc='upper left', bbox_to_anchor=(1, 1), title='Time Since Surgery')
+
+# Saving the graph
+plt.savefig("images/acl_rsi_kdeplot.png", dpi=300, bbox_inches="tight")
+print("![plot](./images/acl_rsi_kdeplot.png")
+plt.show()
+```
+
+
+    
+![png](output_44_0.png)
+    
+
+
+
+```python
+counts = data['visit_graft'].value_counts()
+plt.bar(counts.index, counts.values)
+plt.xlabel('Graft Type at Visit')
+plt.ylabel('Count')
+plt.title('Type of Graft Distribution')
+ax = plt.gca()
+ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
+ax.spines['left'].set_visible(False)
+plt.tick_params(axis='y', which='both', length=0)
+
+# Saving the graph
+plt.savefig("images/graft_type_histogram.png", dpi=300, bbox_inches="tight")
+plt.tight_layout()
+print("![plot](./images/graft_type_histogram.png")
+plt.show()
+```
+
+
+    
+![png](output_45_0.png)
+    
+
+
+BTB and HS autograft appears to be the most common graph types used.
+
+
+```python
+btb_data = data[data['visit_graft'] == 'BTB autograft']
+hs_data = data[data['visit_graft'] == 'HS autograft']
+plt.figure(figsize=(10, 6))
+
+sns.kdeplot(btb_data['acl_rsi'], label='BTB Graft', fill=True, color='blue', alpha=0.6)
+sns.kdeplot(hs_data['acl_rsi'], label='HS Graft', fill=True, color='green', alpha=0.6)
+
+
+plt.xlabel('ACL RSI')
+plt.ylabel('Density')
+plt.title('Distribution of ACL RSI for BTB Graft vs HS Graft')
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['right'].set_visible(False)
+plt.gca().spines['left'].set_visible(False)
+plt.tick_params(axis='y', which='both',length=0)
+
+plt.legend()
+
+# Saving the graph
+plt.savefig("images/acl_rsi_graft_kdeplot.png", dpi=300, bbox_inches="tight")
+print("![plot](./images/acl_rsi_graft_kdeplot.png")
+plt.show()
+```
+
+
+    
+![png](output_47_0.png)
+    
+
+
+
+```python
+mean_btb = np.mean(btb_data['acl_rsi'])
+mean_hs = np.mean(hs_data['acl_rsi'])
+print('Mean ACL RSI for BTB: ', mean_btb, 'Mean ACL RSI for HS: ', mean_hs)
+```
+
+    Mean ACL RSI for BTB:  66.71625423728814 Mean ACL RSI for HS:  69.58213018867924
+
+
+
+```python
+plt.hist(data['redcap_event_name'], bins = 5)
+plt.xlabel('Event Name')
+plt.ylabel('Count')
+plt.title('Event Distribution')
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['right'].set_visible(False)
+plt.gca().spines['left'].set_visible(False)
+plt.xticks(rotation=45, ha='right')
+plt.tick_params(axis='y', which='both',length=0)
+
+# Saving the graph
+plt.savefig("images/event_distribution_histogram.png", dpi=300, bbox_inches="tight")
+print("![plot](./images/event_distribution_histogram.png")
+plt.show()
+```
+
+
+    
+![png](output_49_0.png)
+    
+
+
+
+```python
+helpful_data_clean = data.dropna(subset=['acl_rsi'])
+
+plt.figure(figsize=(12, 8))
+
+
+sns.kdeplot(data=helpful_data_clean, x='acl_rsi', hue='redcap_event_name', fill=True, common_norm=False, warn_singular=False)
+
+
+plt.xlabel('ACL RSI')
+plt.ylabel('Density')
+plt.title('ACL RSI Distribution at Each Visit')
+
+
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['right'].set_visible(False)
+plt.gca().spines['left'].set_visible(False)
+plt.tick_params(axis='y', which='both', length=0)
+
+# Saving the graph
+plt.savefig("images/acl_rsi_visit_kdeplot.png", dpi=300, bbox_inches="tight")
+print("![plot](./images/acl_rsi_visit_kdeplot.png")
+plt.show()
+```
+
+
+    
+![png](output_50_0.png)
+    
+
+
+
+```python
+average_acl_rsi_per_visit = data.groupby('tss_dashboard')['acl_rsi'].mean()
+print('Mean ACL RSI at Visit:', average_acl_rsi_per_visit)
+iqr_per_time = {}
+for time in average_acl_rsi_per_visit.index:
+    time_data = data[data['tss_dashboard'] == time]['acl_rsi'].dropna()
+    q1 = time_data.quantile(0.25)
+    q3 = time_data.quantile(0.75)
+    iqr_per_time[time] = q3 - q1
+
+print("IQR for each time period:", iqr_per_time)
+q1_acl_rsi = data['acl_rsi'].quantile(0.25)
+q3_acl_rsi = data['acl_rsi'].quantile(0.75)
+iqr_acl_rsi = q3_acl_rsi - q1_acl_rsi
+print(f"IQR for ACL RSI: {iqr_acl_rsi}")
+```
+
+    Mean ACL RSI at Visit: tss_dashboard
+    13 to 24 months    67.849391
+    3 to 4 months      57.920182
+    5 to 7 months      70.263743
+    8 to 12 months     76.423492
+    Not Reported       60.345864
+    Preoperative             NaN
+    Name: acl_rsi, dtype: float64
+    IQR for each time period: {'13 to 24 months': 37.285, '3 to 4 months': 35.0, '5 to 7 months': 33.3, '8 to 12 months': 31.975, 'Not Reported': 37.7225, 'Preoperative': nan}
+    IQR for ACL RSI: 36.67
+
+
+
+```python
+from matplotlib import rcParams
+
+#Set font and font size
+rcParams['font.family'] = 'Times New Roman'
+rcParams['font.size'] = 22  
+
+#Data (calculated above)
+rsi_means = [57.920182, 70.263743, 76.423492]
+tss_dashboard = ['3-4 months', '5-7 months', '8-12 months']
+iqr_values = [35.0, 33.3, 31.975]
+
+#Creating figure
+plt.figure(figsize=(8, 8))
+
+#Calculating the upper and lower bounds for shading
+upper_bounds = [mean + iqr / 2 for mean, iqr in zip(rsi_means, iqr_values)]
+lower_bounds = [mean - iqr / 2 for mean, iqr in zip(rsi_means, iqr_values)]
+
+#Shade the IQR regions to show the patient where they are + where they should be aiming to be
+plt.fill_between(tss_dashboard, lower_bounds, upper_bounds, color='green', alpha=0.2, label='IQR')
+
+#Plotting RSI means
+plt.plot(
+    tss_dashboard,
+    rsi_means,
+    marker='o',
+    markersize=10,
+    linestyle='-',
+    linewidth=2,
+    color=(65/255, 105/255, 225/255, 0.5)
+)
+
+#Annotating and labeling each point that shows the mean RSI score for patient's overtime
+for tss, th in zip(tss_dashboard, rsi_means):
+    plt.text(tss, th + 1.5, f'{th:.1f}', ha='center', fontsize=20)
+
+#Point with patient's RSI score at this visit in correct time bin
+plt.scatter('5-7 months', 60.8, color=('green'), s=100, zorder=5) #Dot is green because it is in RSI range
+plt.text('5-7 months', 60.8 + 1.5, '60.8', color='black', ha='center', fontsize=20) #Label the point
+
+
+ax = plt.gca()
+ax.set_ylim(20, 100)
+ax.set_yticks(range(20, 101, 20))
+plt.title('RSI Score Progression') #Graph Title
+plt.xlabel('Time Since Surgery') #X-axis label
+plt.ylabel('RSI Score (Mean)') #Y-axis Label
+ax.spines['top'].set_visible(False) #Get rid of top spine of graph
+ax.spines['right'].set_visible(False) #Get rid of top spine of graph
+ax.tick_params(axis='x', rotation=0, length=0) #Get rid of x-axis ticks
+
+# Saving the graph
+plt.savefig("images/RSI_Score_Progression.png", dpi=300, bbox_inches="tight")
+
+plt.tight_layout()
+print("![plot](./images/RSI_Score_Progression.png")
+plt.show() #Display Graph
+```
+
+
+    
+![png](output_52_0.png)
+    
+
+
+
+```python
+interest_patient['age'].value_counts()
+```
+
+
+
+
+    15.1    1
+    15.5    1
+    15.9    1
+    Name: age, dtype: int64
+
+
+
+
+```python
+data['record_id'].value_counts()
+```
+
+
+
+
+    4552    16
+    4666    13
+    4548    11
+    4554    11
+    4668    11
+            ..
+    1422     1
+    1421     1
+    1420     1
+    1419     1
+    4738     1
+    Name: record_id, Length: 2717, dtype: int64
+
+
+
+
+```python
+data['redcap_event_name'].value_counts()
+```
+
+
+
+
+    visit_1_arm_1    2716
+    visit_2_arm_1    1135
+    visit_3_arm_1     275
+    visit_4_arm_1      91
+    visit_5_arm_1      52
+    visit_6_arm_1      35
+    visit_9_arm_1      33
+    visit_7_arm_1      20
+    visit_8_arm_1      14
+    Name: redcap_event_name, dtype: int64
+
+
+
+
+```python
+required_visits = {'visit_1_arm_1', 'visit_2_arm_1'}
+
+# Group by patient and get set of their visits
+visit_sets = data.groupby('record_id')['redcap_event_name'].apply(set)
+
+# Count how many have all required visits
+patients_with_all_visits = visit_sets.apply(lambda x: required_visits.issubset(x)).sum()
+
+print(f"Number of patients with baseline, visit 1, and visit 2: {patients_with_all_visits}")
+```
+
+    Number of patients with baseline, visit 1, and visit 2: 1134
+
+
+
+```python
+visit1_data = data[data['redcap_event_name'] == 'visit_1_arm_1']
+```
+
+
+```python
+visit2_data = data[data['redcap_event_name'] == 'visit_2_arm_1']
+```
+
+
+```python
+q1 = visit2_data['lsi_ext_isok_60'].quantile(0.25)
+q3 = visit2_data['lsi_ext_isok_60'].quantile(0.75)
+iqr = q3 - q1
+print(q1)
+print(q3)
+print(iqr)
+```
+
+    65.38
+    91.4
+    26.02000000000001
+
+
+
+```python
+q21 = visit2_data['lsi_flex_isok_60'].quantile(0.25)
+q23 = visit2_data['lsi_flex_isok_60'].quantile(0.75)
+iqr2 = q23 - q21
+print(q21)
+print(q23)
+print(iqr2)
+```
+
+    80.9320467425
+    101.671707325
+    20.739660582499994
+
+
+
+```python
+interest_patient.head()
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>record_id</th>
+      <th>redcap_event_name</th>
+      <th>sex_dashboard</th>
+      <th>graft_dashboard2</th>
+      <th>med_meniscus</th>
+      <th>lat_meniscus</th>
+      <th>lat_stab</th>
+      <th>physis</th>
+      <th>visit_sex</th>
+      <th>visit_graft</th>
+      <th>...</th>
+      <th>lsi_flex_mvic_60</th>
+      <th>acl_ext_isok_60</th>
+      <th>con_ext_isok_60</th>
+      <th>lsi_ext_isok_60</th>
+      <th>acl_flex_isok_60</th>
+      <th>con_flex_isok_60</th>
+      <th>lsi_flex_isok_60</th>
+      <th>strength_testing_complete</th>
+      <th>rts</th>
+      <th>rts_tss</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>4129</th>
+      <td>1473</td>
+      <td>visit_1_arm_1</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Female</td>
+      <td>QT autograft</td>
+      <td>...</td>
+      <td>61.54</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4130</th>
+      <td>1473</td>
+      <td>visit_2_arm_1</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Female</td>
+      <td>QT autograft</td>
+      <td>...</td>
+      <td>76.74</td>
+      <td>0.96</td>
+      <td>1.03</td>
+      <td>93.10</td>
+      <td>0.39</td>
+      <td>0.57</td>
+      <td>68.75</td>
+      <td>2.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4131</th>
+      <td>1473</td>
+      <td>visit_3_arm_1</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Female</td>
+      <td>QT autograft</td>
+      <td>...</td>
+      <td>89.58</td>
+      <td>1.12</td>
+      <td>1.39</td>
+      <td>80.77</td>
+      <td>0.82</td>
+      <td>0.84</td>
+      <td>97.87</td>
+      <td>2.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+<p>3 rows × 62 columns</p>
+</div>
+
+
+
+
+```python
+interest_patient['lsi_flex_mvic_60'].value_counts()
+```
+
+
+
+
+    61.54    1
+    76.74    1
+    89.58    1
+    Name: lsi_flex_mvic_60, dtype: int64
+
+
+
+
+```python
+interest_patient['lsi_ext_mvic_60'].value_counts()
+```
+
+
+
+
+    53.78    1
+    68.81    1
+    70.27    1
+    Name: lsi_ext_mvic_60, dtype: int64
+
+
+
+
+```python
+x_axis = ['Running', 'Squatting', 'Landing', 'Bilateral Jump'] #Labels for x-axis
+scores = [89.4, 76.8, 44.3, 68.3] #Values to plot for the bars
+
+#Individually assigning each activity to a variable to make the bars different colors
+person1 = ['Running']
+person2 = ['Squatting']
+person3 = ['Landing']
+person4 = ['Bilateral Jump']
+
+#Setting the font
+plt.rc('font', family='Times New Roman')
+
+#Creating the figure
+fig, ax = plt.subplots(figsize=(10, 6))
+
+#Coloring the bars separately (imitating original LEAP report)
+colors = []
+for label in x_axis:
+    if any(h in label for h in person1):
+        colors.append('#004AAD')
+    elif any(h in label for h in person2):
+        colors.append('#F67B2F')
+    elif any(h in label for h in person3):
+        colors.append('#F03F36')
+    else:
+        colors.append('#8680C4')
+
+#Create bars and label with their respective activity names
+bars = ax.bar(x_axis, scores, color=colors, alpha=0.5)
+
+#Add value labels on top of each bar
+for bar in bars:
+    height = bar.get_height()
+    ax.text(
+        bar.get_x() + bar.get_width() / 2,
+        height + 1.5,
+        f'{height:.1f}',
+        ha='center',
+        va='bottom',
+        fontsize=22
+    )
+
+
+ax.set_ylim(0, 100) #Y-limit to 100 (different from LEAP report; ideal symmetry between injured and uninjured limbs would be 100%)
+ax.set_title('Biomechanics Symmetry', fontsize=22) #Figure Title
+ax.set_ylabel('% Contralateral', fontsize=22) #Y-axis label 
+ax.spines['top'].set_visible(False) #Get rid of top spine of graph
+ax.spines['right'].set_visible(False) #Get rid of right spine of graph
+ax.tick_params(axis='x', rotation=0, length=0) #Get rid fo x-axis ticks
+ax.set_xticklabels(x_axis, fontsize=22) #Increase size of x-xis labels
+ax.axhline(40, color='#64A846', linestyle='--', linewidth=1.5, alpha=0.5) #Graph horizontal, green dashed lines at these values (imitating LEAP report)
+ax.axhline(80, color='#64A846', linestyle='--', linewidth=1.5, alpha=0.5)
+ax.set_yticks([0, 40, 80, 120]) #Setting y-ticks and labels only for these values (imitating original LEAP report)
+ax.set_yticklabels([0, 40, 80, 120], fontsize=12)
+
+# Saving the graph
+plt.savefig("images/Biomechanics_Symmetry.png", dpi=300, bbox_inches="tight")
+
+plt.tight_layout()
+print("![plot](./images/Biomechanics_Symmetry.png")
+plt.show() #Display graph
+```
+
+
+    
+![png](output_64_0.png)
+    
+
+
+
+```python
+labels_mvic = ['Hamstring Strength (60 °/s)'] #First subplot label
+labels_isok = ['Quad Strength (60 °/s)'] #Second subplot label
+scores_ham = [68.75] #LSI patient value for hamstring strength (Isokinetic)
+scores_quad = [93.10] #LSI patient value for quadricep strength (Isokinetic)
+
+#Define IQR bounds (calculated above)
+q1, q3 = 61.9, 89.8      
+q21, q23 = 84.7, 104.4    
+
+#Setting font
+plt.rc('font', family='Times New Roman')
+
+#Creating figure with two subplots
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 6), sharey=True)
+
+ax1.bar(labels_mvic, scores_ham, color='#F67B2F', alpha=0.5) #Plotting the patient's lsi_flex_isok_60 as an orange bar
+ax1.axhspan(q1, q3, color='#64A846', alpha=0.4)  #Shading the IQR in a light green color
+ax1.text(0, scores_ham[0] + 2, f'{scores_ham[0]:.1f}', ha='center', fontsize=22)
+
+ax1.set_ylabel('% Contralateral', fontsize=22) #Setting y-axis label 
+ax1.set_ylim(0, 120)  #Y-limit to 120 to imitate the original LEAP report
+ax1.tick_params(axis='x', length=0) #Get rid of x-axis tick marks
+ax1.spines['top'].set_visible(False) #Get rid of top spine of graph
+ax1.spines['right'].set_visible(False) #Get rid of right spine of graph
+ax1.set_xticklabels(labels_mvic, fontsize=22) #Label the bar
+
+
+ax2.bar(labels_isok, scores_quad, color='#004AAD', alpha=0.5) #Plotting the patient's lsi_ext_isok_60 as a blue bar
+ax2.axhspan(q21, q23, color='#64A846', alpha=0.4)  #Shading the IQR in a light green color
+ax2.text(0, scores_quad[0] + 2, f'{scores_quad[0]:.1f}', ha='center', fontsize=22)
+
+ax2.set_ylim(0, 120)  #Y-limit to 120 to imitate the original LEAP report
+ax2.tick_params(axis='x', length=0) #Get rid of x-axis tick marks
+ax2.spines['top'].set_visible(False) #Get rid of top spine of graph
+ax2.spines['right'].set_visible(False) #Get rid of right spine of graph
+ax2.tick_params(axis='y', length=0) #Get rid of y-axis tick marks (only keeping them for the first subplot)
+ax2.set_xticklabels(labels_isok, fontsize=22) #Label the bar
+
+##Only having ticks and labels on the y-axis for these values (imitating original LEAP report)
+for ax in [ax1, ax2]:
+    ax.set_yticks([0, 40, 80, 120])
+    ax.set_yticklabels([0, 40, 80, 120], fontsize=22)
+
+#Overall Graph Title
+fig.suptitle('Quadriceps and Hamstrings Strength at 60 °/s (Isokinetic)', fontsize=22)
+plt.tight_layout(rect=[0, 0, 1, 0.95])
+
+# Saving the graph
+plt.savefig("images/Strength_Comparison.png", dpi=300, bbox_inches="tight")
+
+print("![plot](./images/Strength_Comparison.png")
+plt.show() #Display the graph
+```
+
+
+    
+![png](output_65_0.png)
+    
+
+
+
+```python
+q_1 = visit2_data['lsi_ext_mvic_60'].quantile(0.25)
+q_3 = visit2_data['lsi_ext_mvic_60'].quantile(0.75)
+iqr_1 = q_3 - q_1
+print(q_1)
+print(q_3)
+print(iqr_1)
+```
+
+    77.27
+    100.0
+    22.730000000000004
+
+
+
+```python
+q_12 = visit2_data['lsi_flex_mvic_60'].quantile(0.25)
+q_32 = visit2_data['lsi_flex_mvic_60'].quantile(0.75)
+iqr_2 = q_32 - q_12
+print(q_12)
+print(q_32)
+print(iqr_2)
+```
+
+    76.065
+    99.255
+    23.189999999999998
+
+
+
+```python
+labels_mvic = ['Hamstring Strength (60 °/s)'] #First subplot label
+labels_isok = ['Quad Strength (60 °/s)'] #Second subplot label
+scores_ham = [68.75] #LSI patient value for hamstring strength (Isometric)
+scores_quad = [93.10] #LSI patient value for quadricept strength (Isometric)
+
+#Define IQR bounds
+q1, q3 = visit2_data['lsi_flex_mvic_60'].quantile(0.25), visit2_data['lsi_flex_mvic_60'].quantile(0.75)  #Hamstring IQR
+q21, q23 = visit2_data['lsi_ext_mvic_60'].quantile(0.25), visit2_data['lsi_ext_mvic_60'].quantile(0.75)  #Quadriceps IQR
+
+#Set font
+plt.rc('font', family='Times New Roman')
+
+#Create figure with 2 subplots
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 6), sharey=True)
+
+ax1.bar(labels_mvic, scores_ham, color='#F67B2F', alpha=0.5) #Plotting the patient's lsi_flex_mvic_60 as an orange bar
+ax1.axhspan(q1, q3, color='#64A846', alpha=0.4)  #Shading the IQR in a light green color
+ax1.text(0, scores_ham[0] + 2, f'{scores_ham[0]:.1f}', ha='center', fontsize=16) #Labeling bar with value
+
+ax1.set_ylabel('% Contralateral', fontsize=22) #Setting y-axis label 
+ax1.set_ylim(0, 120) #Y-limit to 120 to imitate the original LEAP report
+ax1.tick_params(axis='x', length=0) #Get rid of x-axis tick marks
+ax1.spines['top'].set_visible(False) #Get rid of top spine of graph
+ax1.spines['right'].set_visible(False) #Get rid of right spine of graph
+ax1.set_xticklabels(labels_mvic, fontsize=22) #Label the bar
+
+
+ax2.bar(labels_isok, scores_quad, color='#004AAD', alpha=0.5)
+ax2.axhspan(q21, q23, color='#64A846', alpha=0.4)  ##Shading the IQR in a light green color
+ax2.text(0, scores_quad[0] + 2, f'{scores_quad[0]:.1f}', ha='center', fontsize=16)
+
+ax2.set_ylim(0, 120) #Y-limit to 120 to imitate the original LEAP report
+ax2.tick_params(axis='x', length=0) #Get rid of x-axis tick marks
+ax2.spines['top'].set_visible(False) #Get rid of top spine of graph
+ax2.spines['right'].set_visible(False) #Get rid of right spine of graph
+ax2.tick_params(axis='y', length=0) #Get rid of y-axis tick marks(only having ticks on first subplot)
+ax2.set_xticklabels(labels_isok, fontsize=22) #Label the bar
+
+#Only setting y-ticks and labels for these values on both subplots
+for ax in [ax1, ax2]:
+    ax.set_yticks([0, 40, 80, 120])
+    ax.set_yticklabels([0, 40, 80, 120], fontsize=22)
+
+#Overall Graph Title
+fig.suptitle('Quadriceps and Hamstrings Strength at 60 °/s (Isokinetic)', fontsize=22)
+plt.tight_layout(rect=[0, 0, 1, 0.95])
+
+# Saving the graph
+plt.savefig("images/Strength_Comparison.png", dpi=300, bbox_inches="tight")
+print("![plot](./images/Strength_Comparison.png")
+plt.show() #Display the graph
+```
+
+
+    
+![png](output_68_0.png)
+    
+
+
+
+```python
+people = ['Single Hop LSI', 'Triple Hop LSI'] #Different bar labels for each subplot
+scores = [89.0, 77.0] #Patient LSI for SH and TH 
+
+#Assigning to diff. variables to color differently
+highlight_person1 = ['Single Hop LSI'] 
+highlight_person2 = ['Triple Hop LSI']
+
+#Calculating IQRs (assumes visit2_data is already defined)
+sh_q1 = visit2_data['sh_lsi'].quantile(0.25)
+sh_q3 = visit2_data['sh_lsi'].quantile(0.75)
+th_q1 = visit2_data['th_lsi'].quantile(0.25)
+th_q3 = visit2_data['th_lsi'].quantile(0.75)
+
+# Setting font
+plt.rc('font', family='Times New Roman')
+
+#Creating figure with two subplots
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 6), sharey=True)
+
+#First subplot
+colors1 = ['#F67B2F' if p in highlight_person1 else 'gray' for p in people[:1]]
+ax1.bar(people[:1], scores[:1], color=colors1, alpha=0.5) #Plotting the patient's SH LSI as an orange bar
+ax1.axhspan(sh_q1, sh_q3, color='#64A846', alpha=0.4) #Shading the IQR in a light green color
+ax1.text(0, scores[0] + 2, f'{scores[0]:.1f}', ha='center', fontsize=22) 
+
+ax1.set_ylabel('% Contralateral', fontsize=22) #Y-axis label
+ax1.set_xticklabels(highlight_person1, fontsize=22) #Label the bar
+ax1.set_ylim(0, 120) #Y-limit to 120 to imitate the original LEAP report
+ax1.tick_params(axis='x', rotation=0, length=0) #Get rid of x-axis tick marks
+ax1.tick_params(axis='y', length=0) #Get rid of y-axis tick marks
+ax1.spines['top'].set_visible(False) #Get rid of top spine of graph
+ax1.spines['right'].set_visible(False) #Get rid of right spine of graph
+ax1.grid(False) #No grid lines
+
+#Second subplot
+colors2 = ['#F67B2F' if p in highlight_person2 else 'gray' for p in people[1:]] 
+ax2.bar(people[1:], scores[1:], color=colors2, alpha=0.5) #Plotting the patient's TH LSI as an orange bar
+ax2.axhspan(th_q1, th_q3, color='#64A846', alpha=0.4) #Shading the IQR in a light green color
+ax2.text(0, scores[1] + 2, f'{scores[1]:.1f}', ha='center', fontsize=22)
+
+ax2.set_xticklabels(highlight_person2, fontsize=22) #Label the bar
+ax2.set_ylim(0, 120) #Y-limit to 120 to imitate the original LEAP report
+ax2.tick_params(axis='x', rotation=0, length=0)
+ax2.tick_params(axis='y', length=0) #Get rid of y-axis tick marks
+ax2.spines['top'].set_visible(False) #Get rid of top spine of graph
+ax2.spines['right'].set_visible(False) #Get rid of right spine of graph
+ax2.grid(False) #No grid lines
+
+#Only setting y-ticks and labels for these values on both subplots
+for ax in [ax1, ax2]:
+    ax.set_yticks([0, 40, 80, 120])
+    ax.set_yticklabels([0, 40, 80, 120], fontsize=22)
+
+#Overall graph title
+fig.suptitle('Single Limb Hop Tests', fontsize=22)
+
+plt.tight_layout(rect=[0, 0, 1, 0.95])
+
+# Saving the graph
+plt.savefig("images/Single_Limb_Hop_Tests.png", dpi=300, bbox_inches="tight")
+print("![plot](./images/Single_Limb_Hop_Tests.png")
+plt.show() #Display graph
+```
+
+
+    
+![png](output_69_0.png)
+    
+
+
+
+```python
+data['tss_dashboard'].value_counts()
+```
+
+
+
+
+    5 to 7 months      2021
+    3 to 4 months       948
+    8 to 12 months      869
+    Not Reported        311
+    13 to 24 months     192
+    Preoperative         30
+    Name: tss_dashboard, dtype: int64
+
+
+
+
+```python
+group1 = data[data['tss_dashboard'] == '3 to 4 months']
+group2 = data[data['tss_dashboard'] == '5 to 7 months']
+group3 = data[data['tss_dashboard'] == '8 to 12 months']
+```
+
+
+```python
+aclext1 = group1['acl_ext_isok_60'].quantile(.25)
+aclext3 = group1['acl_ext_isok_60'].quantile(.75)
+conext1 = group1['con_ext_isok_60'].quantile(.25)
+conext3 = group1['con_ext_isok_60'].quantile(.75)
+aclflex1 = group1['acl_flex_isok_60'].quantile(.25)
+aclflex3 = group1['acl_flex_isok_60'].quantile(.75)
+conflex1  = group1['con_flex_isok_60'].quantile(.25)
+conflex3  = group1['con_flex_isok_60'].quantile(.75)
+th1 = group1['th_lsi'].quantile(.25)
+th3 = group1['th_lsi'].quantile(.75)
+sh1 = group1['sh_lsi'].quantile(.25)
+sh3 = group1['sh_lsi'].quantile(.75)
+```
+
+
+```python
+th3 - th1
+```
+
+
+
+
+    8.317282607500005
+
+
+
+
+```python
+sh3 - sh1
+```
+
+
+
+
+    18.61370936
+
+
+
+
+```python
+thg1 = group1['th_lsi'].mean()
+thg2 = group2['th_lsi'].mean()
+thg3 = group3['th_lsi'].mean()
+print(thg1)
+print(thg2)
+print(thg3)
+th_iqr1 = th3 - th1
+th_iqr2 = thg2 - thg1
+th_iqr3 = thg3 - thg2
+
+print(f"IQR for THG Group 1: {th_iqr1}")
+print(f"IQR for THG Group 2: {th_iqr2}")
+print(f"IQR for THG Group 3: {th_iqr3}")
+```
+
+    92.11706953
+    93.59774779210657
+    96.57852704372314
+    IQR for THG Group 1: 8.317282607500005
+    IQR for THG Group 2: 1.4806782621065793
+    IQR for THG Group 3: 2.9807792516165676
+
+
+
+```python
+shg1 = group1['sh_lsi'].mean()
+shg2 = group2['sh_lsi'].mean()
+shg3 = group3['sh_lsi'].mean()
+print(shg1)
+print(shg2)
+print(shg3)
+
+```
+
+    87.59511333887096
+    91.77343810911961
+    94.66267309151702
+
+
+
+```python
+#Data (calculated above)
+th_means = [thg1, thg2, thg3]
+tss_dashboard = ['3-4 months', '5-7 months', '8-12 months']
+
+#Calculate IQRs
+th_iqr1 = th3 - th1
+th_iqr2 = thg2 - thg1
+th_iqr3 = thg3 - thg2
+
+#Define lower and upper bounds for shading
+lower_bounds = [thg1 - th_iqr1 / 2, thg2 - th_iqr2 / 2, thg3 - th_iqr3 / 2]
+upper_bounds = [thg1 + th_iqr1 / 2, thg2 + th_iqr2 / 2, thg3 + th_iqr3 / 2]
+
+#Setting font
+plt.rc('font', family='Times New Roman', size=22)
+
+#Creating figure and plotting data
+plt.figure(figsize=(8, 8))
+plt.plot(
+    tss_dashboard,
+    th_means,
+    marker='o',
+    markersize=10,  # Match large dot size
+    linestyle='-',
+    linewidth=2,
+    color='royalblue',
+    alpha=0.5,
+    label='Mean TH LSI'
+)
+
+#Shade IQR in light green
+plt.fill_between(tss_dashboard, lower_bounds, upper_bounds, color='#64A846', alpha=0.4, label='IQR')
+
+#Label the means for each TSS group
+for tss, th in zip(tss_dashboard, th_means):
+    plt.text(tss, th + 1.5, f'{th:.1f}', ha='center', fontsize=20)
+
+#Highlight specific patient point with red dot to indicate patient is not in IQR range
+plt.scatter('5-7 months', 77.0, color='red', s=100, zorder=5)
+plt.text('5-7 months', 77.0 + 1.5, '77.0', color='black', ha='center', fontsize=20)
+
+
+ax = plt.gca()
+ax.set_yticks(range(50, 101, 10))
+plt.title('TH LSI % Progression (Mean)')
+plt.xlabel('Time Since Surgery')
+plt.ylabel('TH LSI (%)')
+plt.ylim(50, max(upper_bounds) + 10)
+
+ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
+plt.tick_params(axis='x', length=0)
+plt.grid(False)
+
+# Saving the graph
+plt.savefig("images/TH_LSI_Progression.png", dpi=300, bbox_inches="tight")
+
+plt.tight_layout()
+print("![plot](./images/TH_LSI_Progression.png")
+plt.show() #Display graph
+```
+
+
+    
+![png](output_77_0.png)
+    
+
+
+
+```python
+interest_patient['lsi_ext_isok_60'].value_counts
+```
+
+
+
+
+    <bound method IndexOpsMixin.value_counts of 4129      NaN
+    4130    93.10
+    4131    80.77
+    Name: lsi_ext_isok_60, dtype: float64>
+
+
+
+
+```python
+#interest_patient.head()
+```
+
+
+```python
+interest_patient['tss'].value_counts() #seeing how far along interest patient was at the second visit
+```
+
+
+
+
+    3.1     1
+    7.5     1
+    13.1    1
+    Name: tss, dtype: int64
+
+
+
+
+```python
+#Setting font
+rcParams['font.family'] = 'Times New Roman'
+rcParams['font.size'] = 22
+
+#Data (calculated above)
+sh_means = [shg1, shg2, shg3]
+tss_dashboard = ['3-4 months', '5-7 months', '8-12 months']
+
+#IQR values
+sh_iqr1 = sh3 - sh1
+sh_iqr2 = shg2 - shg1
+sh_iqr3 = shg3 - shg2
+
+#Bounds for shading
+lower_bounds = [shg1 - sh_iqr1 / 2, shg2 - sh_iqr2 / 2, shg3 - sh_iqr3 / 2]
+upper_bounds = [shg1 + sh_iqr1 / 2, shg2 + sh_iqr2 / 2, shg3 + sh_iqr3 / 2]
+
+#Create figure
+plt.figure(figsize=(8, 8))
+
+#Shade IQR in light green
+plt.fill_between(tss_dashboard, lower_bounds, upper_bounds, color='#64A846', alpha=0.4)
+
+#Plot line and points for means in each TSS group
+plt.plot(
+    tss_dashboard,
+    sh_means,
+    marker='o',
+    markersize=10,
+    linestyle='-',
+    linewidth=2,
+    color='royalblue',
+    alpha=0.5
+)
+
+# Annotate mean values
+for tss, val in zip(tss_dashboard, sh_means):
+    plt.text(tss, val + 1.5, f'{val:.1f}', ha='center', fontsize=20)
+
+#Specific patient dot labeled and colored red to indicate not in IQR range
+plt.scatter('5-7 months', 89.0, color='red', s=100, zorder=5)
+plt.text('5-7 months', 89.0 - 2.5, '89.0', color='black', ha='center', fontsize=20)
+
+
+ax = plt.gca()
+ax.set_yticks(range(50, 101, 10))
+plt.title('SH LSI % Progression (Mean)')
+plt.xlabel('Time Since Surgery')
+plt.ylabel('SH LSI (%)')
+plt.ylim(50, max(upper_bounds) + 10)
+
+ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
+plt.tick_params(axis='x', rotation=0, length=0) 
+plt.grid(False)
+
+# Saving the graph
+plt.savefig("images/SH_LSI_Progression.png", dpi=300, bbox_inches="tight")
+
+plt.tight_layout()
+print("![plot](./images/SH_LSI_Progression.png")
+plt.show() #Display graph
+```
+
+
+    
+![png](output_81_0.png)
+    
+
+
+
+```python
+(aclext1 / conext1) * 100
+```
+
+
+
+
+    56.8075117370892
+
+
+
+
+```python
+(aclext3 / conext3) * 100
+```
+
+
+
+
+    68.8228777292293
+
+
+
+
+```python
+(aclflex1 / conflex1) * 100
+```
+
+
+
+
+    69.94949494949493
+
+
+
+
+```python
+(aclflex3 / conflex3) * 100
+```
+
+
+
+
+    83.57142857142857
+
+
+
+
+```python
+aclext = group1['acl_ext_isok_60'].mean()
+conext = group1['con_ext_isok_60'].mean()
+avglsi = (aclext / conext ) *100
+print(avglsi)
+```
+
+    64.43505233441954
+
+
+
+```python
+aclextg2 = group2['acl_ext_isok_60'].mean()
+conextg2 = group2['con_ext_isok_60'].mean()
+avglsig2 = (aclextg2 / conextg2 ) *100
+print(avglsig2)
+```
+
+    76.32076941124286
+
+
+
+```python
+aclextg3 = group3['acl_ext_isok_60'].mean()
+conextg3 = group3['con_ext_isok_60'].mean()
+avglsig3 = (aclextg3 / conextg3 ) *100
+print(avglsig3)
+
+```
+
+    77.91215082321446
+
+
+
+```python
+#Setting Font
+rcParams['font.family'] = 'Times New Roman'
+rcParams['font.size'] = 22
+
+#LSI means for quads (isokinetic); calculated above
+lsi_means = [avglsi, avglsig2, avglsig3]
+tss_dashboard = ['3-4 months', '5-7 months', '8-12 months']
+
+# Compute IQRs for ACL extension strength (not LSI directly; because of missing data
+iqr1 = group1['acl_ext_isok_60'].quantile(0.75) - group1['acl_ext_isok_60'].quantile(0.25)
+iqr2 = group2['acl_ext_isok_60'].quantile(0.75) - group2['acl_ext_isok_60'].quantile(0.25)
+iqr3 = group3['acl_ext_isok_60'].quantile(0.75) - group3['acl_ext_isok_60'].quantile(0.25)
+
+#Compute upper and lower bounds for shading
+lower_bounds = [avglsi - iqr1 / 2, avglsig2 - iqr2 / 2, avglsig3 - iqr3 / 2]
+upper_bounds = [avglsi + iqr1 / 2, avglsig2 + iqr2 / 2, avglsig3 + iqr3 / 2]
+
+#Create figure
+plt.figure(figsize=(8, 8))
+
+#Shade IQR region in light green
+plt.fill_between(tss_dashboard, lower_bounds, upper_bounds, color='#64A846', alpha=0.4)
+
+#Plot points and trend line for values 
+plt.plot(
+    tss_dashboard,
+    lsi_means,
+    marker='o',
+    markersize=10,
+    linestyle='-',
+    linewidth=2,
+    color='royalblue',
+    alpha=0.5
+)
+
+#Label mean values
+for tss, val in zip(tss_dashboard, lsi_means):
+    plt.text(tss, val + 1.5, f'{val:.1f}', ha='center', fontsize=20)
+
+#Specific patient point labeled and colored green to indicate within/above IQR range
+plt.scatter('5-7 months', 93.10, color='#64A846', s=100, zorder=5)
+plt.text('5-7 months', 93.10 + 1.5, '93.1', color='black', ha='center', fontsize=20)
+
+
+ax = plt.gca()
+ax.set_yticks(range(50, 101, 10))
+plt.title('Quadricep Strength Recovery (Mean LSI %)', fontsize=22)
+plt.xlabel('Time Since Surgery', fontsize=22)
+plt.ylabel('Contralateral (%)', fontsize=22)
+plt.ylim(50, max(upper_bounds) + 30)
+ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
+plt.tick_params(axis='x', length=0)
+
+# Saving the graph
+plt.savefig("images/Quadricep_Strength_Recovery.png", dpi=300, bbox_inches="tight")
+
+plt.tight_layout()
+print("![plot](./images/Quadricep_Strength_Recovery.png")
+plt.show() #Display graph
+```
+
+
+    
+![png](output_89_0.png)
+    
+
+
+
+```python
+aclflex = group1['acl_flex_isok_60'].mean()
+conflex = group1['con_flex_isok_60'].mean()
+avglsi11 = (aclflex / conflex ) *100
+print(avglsi11)
+```
+
+    79.36454292375444
+
+
+
+```python
+aclflexg2 = group2['acl_flex_isok_60'].mean()
+conflexg2 = group2['con_flex_isok_60'].mean()
+avglsig22 = (aclflexg2 / conflexg2 ) *100
+print(avglsig2)
+```
+
+    76.32076941124286
+
+
+
+```python
+aclflexg3 = group3['acl_flex_isok_60'].mean()
+conflexg3 = group3['con_flex_isok_60'].mean()
+avglsig32 = (aclflexg3 / conflexg3 ) *100
+print(avglsig3)
+```
+
+    77.91215082321446
+
+
+
+```python
+acl_flexion = visit1_data['acl_flex_mvic_60'].mean()
+print(acl_flexion)
+con_flexion = visit1_data['con_flex_mvic_60'].mean()
+print(con_flexion)
+avg_percent = (acl_flexion / con_flexion) *100
+print(avg_percent)
+```
+
+    1.1826369863013697
+    0.909278350515464
+    130.06325132792838
+
+
+
+```python
+aclsh = visit1_data['acl_sh'].mean()
+print(aclsh)
+consh = visit1_data['con_sh'].mean()
+print(consh)
+percent = aclsh / consh
+print(percent)
+```
+
+    15.027418489065605
+    16.63582125124131
+    0.9033169004472387
+
+
+
+```python
+q11 = visit1_data['acl_sh'].quantile(0.25)
+q31 = visit1_data['acl_sh'].quantile(0.75)
+iqr = q31 - q11
+print(q11)
+print(q31)
+print(iqr)
+```
+
+    0.61
+    1.5775000000000001
+    0.9675000000000001
+
+
+
+```python
+q111 = visit1_data['con_sh'].quantile(0.25)
+q311 = visit1_data['con_sh'].quantile(0.75)
+iqr = q311 - q111
+print(q111)
+print(q311)
+print(iqr)
+```
+
+    0.68
+    1.72
+    1.04
+
+
+
+```python
+patient_one = visit1_data[visit1_data['record_id'] == 1]
+print(patient_one)
+```
+
+       record_id redcap_event_name sex_dashboard graft_dashboard2  med_meniscus  \
+    1          1     visit_1_arm_1           NaN              NaN           NaN   
+    
+       lat_meniscus  lat_stab  physis visit_sex visit_graft  ...  \
+    1           NaN       NaN     NaN      Male       Other  ...   
+    
+       lsi_flex_mvic_60  acl_ext_isok_60  con_ext_isok_60 lsi_ext_isok_60  \
+    1               NaN             2.57             2.92           87.86   
+    
+       acl_flex_isok_60  con_flex_isok_60  lsi_flex_isok_60  \
+    1               1.5              1.45            103.32   
+    
+       strength_testing_complete rts rts_tss  
+    1                        2.0 NaN     NaN  
+    
+    [1 rows x 61 columns]
+
+
+
+```python
+print(patient_one['acl_sh'])
+print(patient_one['con_sh'])
+print(patient_one['acl_ext_isok_60'])
+print(patient_one['con_ext_isok_60'])
+
+sh_percentage = (patient_one['acl_sh'] / patient_one['con_sh']) * 100
+print(sh_percentage)
+
+lsi_percentage = (patient_one['acl_ext_isok_60'] / patient_one['con_ext_isok_60']) * 100
+print(lsi_percentage)
+```
+
+    1    0.81
+    Name: acl_sh, dtype: float64
+    1    0.83
+    Name: con_sh, dtype: float64
+    1    2.57
+    Name: acl_ext_isok_60, dtype: float64
+    1    2.92
+    Name: con_ext_isok_60, dtype: float64
+    1    97.590361
+    dtype: float64
+    1    88.013699
+    dtype: float64
+
+
+
+```python
+print(patient_one['acl_th'])
+print(patient_one['con_th'])
+print(patient_one['acl_flex_isok_60'])
+print(patient_one['con_flex_isok_60'])
+
+th_percentage = (patient_one['acl_th'] / patient_one['con_th']) * 100
+print(th_percentage)
+
+lsi_percentage = (patient_one['acl_ext_isok_60'] / patient_one['con_ext_isok_60']) * 100
+#print(lsi_percentage)
+
+
+flex_lsi_percentage = (patient_one['acl_flex_isok_60'] / patient_one['con_flex_isok_60']) * 100
+print(flex_lsi_percentage)
+```
+
+    1   NaN
+    Name: acl_th, dtype: float64
+    1   NaN
+    Name: con_th, dtype: float64
+    1    1.5
+    Name: acl_flex_isok_60, dtype: float64
+    1    1.45
+    Name: con_flex_isok_60, dtype: float64
+    1   NaN
+    dtype: float64
+    1    103.448276
+    dtype: float64
+
+
+
+```python
+visit2_data = data[data['redcap_event_name'] == 'visit_2_arm_1']
+```
+
+
+```python
+q12 = visit2_data['acl_sh'].quantile(0.25)
+q32 = visit2_data['acl_sh'].quantile(0.75)
+iqr = q32 - q12
+print(q12)
+print(q32)
+print(iqr)
+```
+
+    1.06
+    111.0
+    109.94
+
+
+
+```python
+q122 = visit2_data['con_sh'].quantile(0.25)
+q322 = visit2_data['con_sh'].quantile(0.75)
+iqr = q322 - q122
+print(q122)
+print(q322)
+print(iqr)
+```
+
+    1.2
+    121.0
+    119.8
+
+
+
+```python
+visit_2_mean = visit2_data['lsi_ext_isok_60'].mean()
+print(visit_2_mean)
+```
+
+    78.97715718975918
+
+
+
+```python
+visit1_data = data[data['redcap_event_name'] == 'visit_1_arm_1']
+
+# Calculate IQR for 'lsi' column
+q1 = visit1_data['lsi_ext_isok_60'].quantile(0.25)
+q3 = visit1_data['lsi_ext_isok_60'].quantile(0.75)
+iqr = q3 - q1
+
+print(f"IQR for lsi at visit 1: {iqr}")
+```
+
+    IQR for lsi at visit 1: 28.58
+
+
+
+```python
+visit3_data = data[data['redcap_event_name'] == 'visit_3_arm_1']
+
+# Calculate IQR for 'lsi' column
+q1 = visit3_data['lsi_ext_isok_60'].quantile(0.25)
+q3 = visit3_data['lsi_ext_isok_60'].quantile(0.75)
+iqr = q3 - q1
+
+print(f"IQR for lsi at visit 1: {iqr}")
+```
+
+    IQR for lsi at visit 1: 28.1579624675
+
+
+
+```python
+total_missing = visit1_data.isnull().sum().sum()
+print(f"Total missing values: {total_missing}")
+```
+
+    Total missing values: 97183
+
+
+
+```python
+#Mean ACL RSI for Patients
+visit_1_rsi = visit1_data['acl_rsi'].mean()
+visit_1_rsi
+```
+
+
+
+
+    62.274216184971095
+
+
+
+
+```python
+#Heat Map of Missing Data
+missing_data = data.isna()
+
+# Set the figure size
+missing_data = data.isna()
+
+
+plt.figure(figsize=(15, 10))
+sns.heatmap(missing_data, cbar=False, cmap='coolwarm', yticklabels=False)
+#cool warm setting has missing values in red
+
+plt.title('Missing Data Heatmap')
+plt.xlabel('Columns')
+plt.ylabel('Rows')
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['right'].set_visible(False)
+plt.gca().spines['left'].set_visible(False)
+plt.tick_params(axis='y', which='both',length=0)
+
+# Saving the graph
+plt.savefig("images/missing_data_heatmap.png", dpi=300, bbox_inches="tight")
+print("![plot](./images/missing_data_heatmap.png")
+plt.show()
+```
+
+
+    
+![png](output_108_0.png)
+    
+
+
+Possible Strategies for Missing Data
+- If missing values are for numeric variables and there are less than 75 missing values, I think imputation could be a good idea.
+
+Research Questions:
+1. How does reinjury relate to age, graft, and quadricep strength?
+2. As time since surgery increases, how do torque and flexion/extension change?
+3. Does visit number have a relationship with their performance?
+
+Visualization Ideas:
+1. If correlation is found- trends or scatter plot
+2. Distribution of RSI scores or LSI for reinjured grouping.
+
+Goals:
+1. Impute values for some missing data values if group members agree.
+
+For the future, I want to see what my group members found interesting. This will help direct our questions and visualization ideas.
